@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ===== VERCEL ANALYTICS ===== -->
+  <script>
+      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
+
+  <meta name="description" content="Explore Mohit Roscen's technical projects, open-source work, and design layouts.">
+  <title>Projects | Mohit Roscen</title>
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Quantico:ital,wght@0,400;0,700;1,400;1,700&family=Viga&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+  <link rel="manifest" href="assets/favicon/site.webmanifest">
+  <link rel="shortcut icon" href="assets/favicon/favicon.ico">
+  <script>
+    (function() {
+      const isReload = (window.performance && window.performance.getEntriesByType && window.performance.getEntriesByType('navigation')[0] && window.performance.getEntriesByType('navigation')[0].type === 'reload') ||
+                       (window.performance && window.performance.navigation && window.performance.navigation.type === 1);
+      if (sessionStorage.getItem('portfolio-loaded') && !isReload) {
+        document.documentElement.classList.add('skip-loader');
+      }
+    })();
+  </script>
+</head>
+
+<body class="loading">
+  <!-- Loader Overlay -->
+  <div id="loader-overlay" class="loader-overlay">
+    <div class="loader-container">
+      <div class="loader-avatar-wrap">
+        <div class="loader-avatar-inner">
+          <video src="assets/img/1781456302945569.mp4" autoplay loop muted playsinline></video>
+        </div>
+      </div>
+      <div class="loader-name">FLX</div>
+      <div class="loader-bar-section">
+        <div class="loader-bar-track">
+          <div class="loader-bar-fill" id="bar-fill"></div>
+        </div>
+        <div class="loader-bar-labels">
+          <span class="loader-bar-msg" id="bar-msg">Initializing...</span>
+          <span class="loader-bar-pct" id="bar-pct">0%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grain Overlay for visual texture -->
+  <div class="grain-overlay"></div>
+  <div class="menu-overlay" id="menu-overlay"></div>
+
+  <div class="container fade-in-element">
+    <!-- Header/Nav -->
+    <header class="reveal-header">
+      <a href="/" class="logo">FLX</a>
+      <nav class="nav-menu" id="nav-menu">
+        <a href="/about" class="nav-link">About</a>
+        <a href="/projects" class="nav-link active">Projects</a>
+        <a href="/contact" class="nav-link">Contact</a>
+      </nav>
+      <div class="header-right">
+        <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
+          <i class="ti ti-moon" id="themeIcon"></i>
+        </button>
+        <button id="menu-toggle" class="menu-toggle-btn" aria-label="Toggle Navigation Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Projects Section -->
+    <main class="reveal-content" style="padding-top: 2.5rem;">
+      <h1 class="section-title"
+        style="color: var(--text-secondary); font-size: 2rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; font-family: var(--font-viga);">Projects
+      </h1>
+
+      <div class="portfolio-section">
+        <a href="project.html?id=0" class="project-item" data-project="0">
+          <span class="project-title">AI Farming Drone</span>
+          <div class="proj-right">
+            <span class="project-tags">Drone for Disease Detection in Plants</span>
+            <div class="click-hint">
+              <span class="click-hint-text">Click for details</span>
+              <span class="click-hint-arrow">↗</span>
+            </div>
+          </div>
+        </a>
+        <a href="project.html?id=1" class="project-item" data-project="1">
+          <span class="project-title">AI Traffic Light System</span>
+          <div class="proj-right">
+            <span class="project-tags">Traffic Light Adjusting Using AI</span>
+            <div class="click-hint">
+              <span class="click-hint-text">Click for details</span>
+              <span class="click-hint-arrow">↗</span>
+            </div>
+          </div>
+        </a>
+        <a href="project.html?id=2" class="project-item" data-project="2">
+          <span class="project-title">ICU-Alert System</span>
+          <div class="proj-right">
+            <span class="project-tags">Emergency Alert System Using IOT</span>
+            <div class="click-hint">
+              <span class="click-hint-text">Click for details</span>
+              <span class="click-hint-arrow">↗</span>
+            </div>
+          </div>
+        </a>
+        <a href="project.html?id=3" class="project-item" data-project="3">
+          <span class="project-title">AI Weather Prediction</span>
+          <div class="proj-right">
+            <span class="project-tags">Weather Forecasting Using ML</span>
+            <div class="click-hint">
+              <span class="click-hint-text">Click for details</span>
+              <span class="click-hint-arrow">↗</span>
+            </div>
+          </div>
+        </a>
+        <a href="project.html?id=4" class="project-item" data-project="4">
+          <span class="project-title">AI Medic Chatbot</span>
+          <div class="proj-right">
+            <span class="project-tags">Medic Assistant Chatbot Using AI </span>
+            <div class="click-hint">
+              <span class="click-hint-text">Click for details</span>
+              <span class="click-hint-arrow">↗</span>
+            </div>
+          </div>
+        </a>
+        <a href="project.html?id=5" class="project-item" data-project="5">
+          <span class="project-title">Multipurpose Rover</span>
+          <div class="proj-right">
+            <span class="project-tags">Multi Purpose Rover</span>
+            <div class="click-hint">
+              <span class="click-hint-text">Click for details</span>
+              <span class="click-hint-arrow">↗</span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="preview-img" id="preview">
+        <div class="img-inner" id="preview-inner"></div>
+      </div>
+    </main>
+
+    <!-- Bottom Footer connect bar -->
+    <div class="bottom-connect-bar reveal-content">
+      <a href="/contact" class="connect-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+        </svg>
+        Write Message
+      </a>
+      <span class="copyright-text">&copy; 2026 Mohit Roscen</span>
+    </div>
+  </div>
+
+  <script src="js/main.js?v=1.0.3"></script>
+  <script>
+    const previews = [
+      { label: "AI Farming Drone", bg: "url('assets/img/project1.jpg') center/cover" },
+      { label: "AI Traffic Light System", bg: "url('assets/img/project2.jpg') center/cover" },
+      { label: "ICU-Alert System", bg: "url('assets/img/project3.jpg') center/cover" },
+      { label: "AI Weather Prediction", bg: "url('assets/img/project4.jpeg') center/cover" },
+      { label: "AI Medic Chatbot", bg: "url('assets/img/project5.jpg') center/cover" },
+      { label: "Multipurpose Rover", bg: "url('assets/img/project6.jpg') center/cover" },
+    ];
+
+    // Preload hover images for instant availability and zero flickering
+    previews.forEach(p => {
+      const img = new Image();
+      const match = p.bg.match(/url\('(.*?)'\)/);
+      if (match && match[1]) {
+        img.src = match[1];
+      }
+    });
+
+    const preview = document.getElementById('preview');
+    const previewInner = document.getElementById('preview-inner');
+    document.querySelectorAll('.project-item').forEach(item => {
+      const p = previews[parseInt(item.dataset.project)];
+      item.addEventListener('mouseenter', () => {
+        previewInner.style.background = p.bg;
+        preview.classList.add('visible');
+      });
+      item.addEventListener('mouseleave', () => preview.classList.remove('visible'));
+    });
+    document.addEventListener('mousemove', e => {
+      const padding = 15;
+      const halfWidth = 170;
+      const topOffset = 129; // 60% of 215px height
+      const bottomOffset = 86; // 40% of 215px height
+      
+      const x = Math.max(halfWidth + padding, Math.min(e.clientX, window.innerWidth - halfWidth - padding));
+      const y = Math.max(topOffset + padding, Math.min(e.clientY, window.innerHeight - bottomOffset - padding));
+      
+      preview.style.left = x + 'px';
+      preview.style.top = y + 'px';
+    });
+  </script>
+</body>
+
+</html>

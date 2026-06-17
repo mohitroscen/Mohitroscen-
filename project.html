@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ===== VERCEL ANALYTICS ===== -->
+  <script>
+      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
+
+  <meta name="description" id="meta-description" content="View details for Mohit Roscen's technical project.">
+  <title id="page-title">Project | Mohit Roscen</title>
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quantico:ital,wght@0,400;0,700;1,400;1,700&family=Viga&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+  <link rel="shortcut icon" href="assets/favicon/favicon.ico">
+  <script>
+    (function() {
+      const isReload = (window.performance && window.performance.getEntriesByType && window.performance.getEntriesByType('navigation')[0] && window.performance.getEntriesByType('navigation')[0].type === 'reload') ||
+                       (window.performance && window.performance.navigation && window.performance.navigation.type === 1);
+      if (sessionStorage.getItem('portfolio-loaded') && !isReload) {
+        document.documentElement.classList.add('skip-loader');
+      }
+    })();
+  </script>
+</head>
+<body class="loading">
+  <!-- Loader Overlay -->
+  <div id="loader-overlay" class="loader-overlay">
+    <div class="loader-container">
+      <div class="loader-avatar-wrap">
+        <div class="loader-avatar-inner">
+          <video src="assets/img/1781456302945569.mp4" autoplay loop muted playsinline></video>
+        </div>
+      </div>
+      <div class="loader-name">FLX</div>
+      <div class="loader-bar-section">
+        <div class="loader-bar-track">
+          <div class="loader-bar-fill" id="bar-fill"></div>
+        </div>
+        <div class="loader-bar-labels">
+          <span class="loader-bar-msg" id="bar-msg">Initializing...</span>
+          <span class="loader-bar-pct" id="bar-pct">0%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grain Overlay for visual texture -->
+  <div class="grain-overlay"></div>
+  <div class="menu-overlay" id="menu-overlay"></div>
+
+  <div class="container fade-in-element">
+    <!-- Header/Nav -->
+    <header class="reveal-header">
+      <a href="/" class="logo">FLX</a>
+      <nav class="nav-menu" id="nav-menu">
+        <a href="/about" class="nav-link">About</a>
+        <a href="/projects" class="nav-link active">Projects</a>
+        <a href="/contact" class="nav-link">Contact</a>
+      </nav>
+      <div class="header-right">
+        <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
+          <i class="ti ti-moon" id="themeIcon"></i>
+        </button>
+        <button id="menu-toggle" class="menu-toggle-btn" aria-label="Toggle Navigation Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Project Detail Content -->
+    <main class="project-detail-layout">
+      <!-- Back Link -->
+      <div class="back-link-container reveal-content">
+        <a href="/projects" class="back-link">
+          <span class="back-arrow">←</span> Back to Projects
+        </a>
+      </div>
+ 
+      <div class="project-detail-grid">
+        <div class="project-detail-info reveal-content">
+          <h1 class="project-detail-title" id="proj-title"></h1>
+          <p class="project-detail-description" id="proj-desc"></p>
+        </div>
+ 
+        <div class="project-detail-images-column reveal-media">
+          <a href="" target="_blank" id="github-link" class="github-source-btn">
+            <span class="icon-wrap">
+              <svg class="icon-fill" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4 11.5 11.5 0 0 1 3 .4c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.57 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z" />
+              </svg>
+              <svg class="icon-outline" width="16" height="16" viewBox="0 0 24 24">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+              </svg>
+            </span>
+            GitHub Source
+          </a>
+          <div class="project-detail-image-container">
+            <div class="project-detail-image-glow"></div>
+            <img src="" alt="" id="proj-image" class="project-detail-image">
+          </div>
+          <div class="project-detail-image-container" id="proj-image-2-container">
+            <div class="project-detail-image-glow"></div>
+            <img src="" alt="" id="proj-image-2" class="project-detail-image">
+          </div>
+        </div>
+      </div>
+    </main>
+ 
+    <!-- Bottom Footer connect bar -->
+    <div class="bottom-connect-bar reveal-content">
+      <a href="/contact" class="connect-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+        </svg>
+        Write Message
+      </a>
+      <span class="copyright-text">&copy; 2026 Mohit Roscen</span>
+    </div>
+  </div>
+
+  <script src="js/main.js?v=1.0.3"></script>
+  <script>
+    const projectData = [
+      {
+        title: "AI Farming Drone",
+        tag: "AI/ML",
+        image: "assets/img/project1.jpg",
+        image2: "assets/img/drone.JPEG",
+        github: "https://github.com/mohitroscen/Ai-farming-drone-for-disease-detection-.git",
+        desc: `<p>The system integrates a high-performance software pipeline tailored for edge-computing hardware, enabling the quadcopter to process high-resolution aerial feeds locally without relying on cloud connectivity. Equipped with a high-efficiency multi-spectral camera, the drone captures detailed structural data to run real-time anomaly checks. The onboard vision model instantly flags localized plant pathologies, tracks overall crop health metrics, and registers precise GPS coordinates to generate an actionable stress map for automated field diagnostics.</p>
+<h3>Tech Stack</h3>
+<ul>
+  <li><strong>TensorFlow & PyTorch:</strong> Powers the core Convolutional Neural Network (CNN) for fine-grained, multi-class plant disease classification.</li>
+  <li><strong>OpenCV:</strong> Handles real-time video stream ingestion, frame stabilization, and dynamic HSV color-space masking to isolate foliage.</li>
+  <li><strong>Embedded Deployment:</strong> Optimized for low-power, high-FPS inference on onboard edge hardware.</li>
+  <li><strong>Flight Integration:</strong> Synchronizes high-efficiency camera feeds with telemetry data for precise, geotagged crop monitoring.</li>
+</ul>`
+      },
+      {
+        title: "AI Traffic Light System",
+        tag: "AI",
+        image: "assets/img/project2.jpg",
+        image2: "assets/img/traffic.jpg",
+        github: "https://github.com/mohitroscen/Samrt-Traffic-Light-Mangment-Sytem-.git",
+        desc: `<p>An intelligent traffic control solution designed to mitigate urban congestion by replacing static timers with dynamic, real-time adjustments. Utilizing a high-efficiency camera network, the system monitors intersections to analyze vehicle density across all lanes simultaneously. By calculating live vehicle counts, the core algorithm dynamically adjusts traffic light durations—extending green lights for heavily congested roads while reducing wait times for empty lanes—optimizing overall intersection throughput and reducing idle vehicle emissions.</p>
+<h3>Tech Stack</h3>
+<ul>
+  <li><strong>YOLOv5 & TensorFlow:</strong> Real-time vehicle detection, tracking, and density estimation.</li>
+  <li><strong>OpenCV:</strong> Multi-camera stream ingestion, frame preprocessing, and ROI masking.</li>
+  <li><strong>Smart Controller Logic:</strong> Adaptive algorithmic processing for dynamic signal switching.</li>
+</ul>`
+      },
+      {
+        title: "ICU-Alert System",
+        tag: "IOT",
+        image: "assets/img/project3.jpg",
+        image2: "assets/img/icu-alert.JPEG",
+        github: "https://github.com/mohitroscen",
+        desc: `<p>An automated, high-precision clinical monitoring system developed to enhance patient safety in intensive care units through instant distress broadcasting. The system continuously tracks critical physiological biometrics, such as heart rate fluctuations, and automatically triggers an immediate response if readings cross safe thresholds. When an anomaly is detected, it instantly broadcasts real-time alert notifications directly to the attending doctor's device while simultaneously activating a physical buzzer alarm at the central nursing station, ensuring rapid, multi-tiered medical intervention.</p>
+<h3>Tech Stack</h3>
+<ul>
+  <li><strong>IoT Hardware & Sensors:</strong> Real-time physiological biometric data acquisition and hardware-level triggers.</li>
+  <li><strong>Full-Stack Application:</strong> Built for centralized, low-latency monitoring and complete alert history logging.</li>
+  <li><strong>Notification Architecture:</strong> Automated routing for immediate mobile alerts and localized ward alarms.</li>
+</ul>`
+      },
+      {
+        title: "AI Weather Prediction",
+        tag: "AI",
+        image: "assets/img/project4.jpeg",
+        image2: "assets/img/ai weather.png",
+        github: "https://github.com/mohitroscen",
+        desc: `<p>A high-accuracy meteorological forecasting platform designed to deliver hyper-local weather insights. Moving away from broad regional estimates, the system pulls live conditions via the Google Weather API to analyze complex atmospheric variables for a specific, user-selected location. The application processes these inputs through a deep learning model to project upcoming conditions, organizing the results into a clean, intuitive predictive data table and generating dynamic visual graphs to help users track shifting atmospheric trends at a glance.</p>
+<h3>Tech Stack</h3>
+<ul>
+  <li><strong>Keras & Pandas:</strong> Advanced data manipulation and deep learning regression for precise, hyper-local forecasting.</li>
+  <li><strong>Google Weather API:</strong> Live, location-based meteorological data ingestion.</li>
+  <li><strong>Streamlit:</strong> Interactive web dashboard for rendering real-time prediction tables and dynamic graphs.</li>
+</ul>`
+      },
+      {
+        title: "AI Medic Chatbot",
+        tag: "Website Design",
+        image: "assets/img/project5.jpg",
+        image2: "",
+        github: "",
+        desc: `<p>An intelligent healthcare assistant application designed to streamline patient care, scheduling, and daily medical routines. The platform features an advanced AI-powered chat interface that interacts with users to assess symptoms, answer medical queries, and provide preliminary guidance. Beyond virtual assistance, the application bridges the gap between digital and physical care by enabling seamless doctor appointment scheduling and incorporating an automated tablet reminder system to ensure strict patient medication compliance.</p>
+<h3>Tech Stack</h3>
+<ul>
+  <li><strong>Flutter & Dart:</strong> Cross-platform mobile development for a smooth, high-performance user experience.</li>
+  <li><strong>Generative AI / LLM API:</strong> Powers the conversational medical assistant for smart, real-time user guidance.</li>
+  <li><strong>Local Notifications & Database:</strong> Manages offline tablet reminders, scheduling storage, and user alerts.</li>
+</ul>`
+      },
+      {
+        title: "Multipurpose Rover",
+        tag: "Branding",
+        image: "assets/img/project6.jpg",
+        image2: "",
+        github: "",
+        desc: `<p>A versatile, custom-built robotic rover designed as a playground for hardware-software integration and experimental automation. Built purely for exploration and hands-on fun, the rover features a modular chassis capable of adapting to diverse environments and tasks. Equipped with a remote control interface and real-time sensor feedback, this multi-purpose vehicle serves as a flexible testing bed for custom navigation algorithms, obstacle avoidance routines, and interactive hardware add-ons.</p>
+<h3>Tech Stack</h3>
+<ul>
+  <li><strong>Embedded C++ & Microcontrollers:</strong> Low-level firmware architecture for motor control, sensor interfacing, and hardware logic.</li>
+  <li><strong>IoT Wireless Communication:</strong> Seamless Wi-Fi or Bluetooth protocols for real-time telemetry and wireless steering control.</li>
+  <li><strong>Sensor Integration:</strong> Interfaced ultrasonic sensors, motor drivers, and power management modules for autonomous traversal.</li>
+</ul>`
+      }
+    ];
+
+    // Read ID from URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    let projectId = parseInt(urlParams.get('id'));
+
+    // Fallback to 0 if invalid id
+    if (isNaN(projectId) || projectId < 0 || projectId >= projectData.length) {
+      projectId = 0;
+    }
+
+    const data = projectData[projectId];
+
+    // Populate contents
+    document.getElementById('proj-title').textContent = data.title;
+    const descContent = data.desc.trim().startsWith('<') ? data.desc : `<p>${data.desc}</p>`;
+    document.getElementById('proj-desc').innerHTML = descContent;
+    document.getElementById('proj-image').src = data.image;
+    document.getElementById('proj-image').alt = data.title;
+    if (data.image2) {
+      document.getElementById('proj-image-2').src = data.image2;
+      document.getElementById('proj-image-2').alt = data.title;
+      document.getElementById('proj-image-2-container').style.display = 'block';
+    } else {
+      document.getElementById('proj-image-2-container').style.display = 'none';
+    }
+    if (data.github) {
+      document.getElementById('github-link').href = data.github;
+      document.getElementById('github-link').style.display = 'inline-flex';
+    } else {
+      document.getElementById('github-link').style.display = 'none';
+    }
+    document.getElementById('page-title').textContent = `${data.title} | Projects`;
+    document.getElementById('meta-description').setAttribute('content', `Learn more about Mohit Roscen's project: ${data.title}.`);
+  </script>
+</body>
+</html>

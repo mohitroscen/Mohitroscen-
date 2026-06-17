@@ -1,0 +1,21 @@
+{
+  "name": "mohit-roscen-portfolio",
+  "version": "1.0.0",
+  "description": "Developer portfolio website for Mohit Roscen",
+  "main": "index.html",
+  "scripts": {
+    "start": "echo 'Server starting at http://localhost:3005' && python3 -m http.server 3005 --bind 127.0.0.1",
+    "build": "echo 'Static site - no build needed'"
+  },
+  "keywords": [
+    "portfolio",
+    "web",
+    "developer",
+    "static"
+  ],
+  "author": "Mohit Roscen",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
