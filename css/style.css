@@ -240,7 +240,7 @@ body.page-home.loaded .reveal-media {
   opacity: 0;
   transform: translateY(24px);
   transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .sr-item.sr-visible {
@@ -510,7 +510,7 @@ body.menu-open .menu-overlay {
 .hero {
   flex-grow: 0;
   flex-shrink: 0;
-  min-height: 360px;
+  min-height: auto;
   padding: 0 0 0.5rem 0;
   margin-bottom: 0;
   overflow: visible;
@@ -526,7 +526,7 @@ body.menu-open .menu-overlay {
   display: block;
   /* image is absolutely positioned; only left content flows */
   margin: 0;
-  margin-top: 3.5rem;
+  margin-top: 5rem;
   padding-right: 40%;
   /* reserve space so text doesn't overlap image */
 }
@@ -534,7 +534,7 @@ body.menu-open .menu-overlay {
 /* Clean photo wrapper — absolutely positioned so it never moves with left content */
 .hero-photo-wrapper {
   position: absolute;
-  top: 5.9rem;
+  top: 4.5rem;
   right: -7.2rem;
   width: 46%;
   display: flex;
@@ -741,21 +741,34 @@ h1 {
   color: var(--text-secondary);
   text-decoration: none;
   cursor: pointer;
-  background: var(--badge-bg);
-  border: 1px solid var(--badge-border);
-  padding: 8px 16px;
-  height: 38px;
-  border-radius: 10px;
+  background: transparent;
+  border: none;
+  padding: 8px;
+  border-radius: 50%;
   position: relative;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Apply pill shape to about page links with text */
+.about__links .link-h {
+  border-radius: 50px;
+  padding: 8px 16px;
+  height: auto;
+  color: var(--text-primary) !important; /* Text is static white */
+}
+
+.about__links .link-h .icon-wrap {
+  color: var(--text-secondary); /* Icon starts grey */
+  transition: color 0.3s ease;
+}
+
+.about__links .link-h:hover .icon-wrap {
+  color: var(--text-primary); /* Icon turns white on hover */
+}
+
 .link-h:hover {
   color: var(--text-primary);
-  background: var(--badge-hover-bg);
-  border-color: var(--border-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px var(--shadow);
 }
 
 .link-h:active {
@@ -766,8 +779,8 @@ h1 {
 .link-h .icon-wrap,
 .github-source-btn .icon-wrap {
   position: relative;
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
   flex-shrink: 0;
 }
 
@@ -776,18 +789,21 @@ h1 {
   position: absolute;
   top: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 /* solid icon fades out */
 .link-h .icon-fill,
 .github-source-btn .icon-fill {
   opacity: 1;
-  transition: opacity 0.15s ease;
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .link-h:hover .icon-fill,
 .github-source-btn:hover .icon-fill {
   opacity: 0;
+  transition: opacity 0.15s ease;
 }
 
 /* outline strokes draw in */
@@ -806,7 +822,7 @@ h1 {
   stroke-linejoin: round;
   stroke-dasharray: 80;
   stroke-dashoffset: 80;
-  transition: stroke-dashoffset 0s;
+  transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .link-h:hover .icon-outline path,
@@ -818,7 +834,6 @@ h1 {
 .github-source-btn:hover .icon-outline circle,
 .github-source-btn:hover .icon-outline line {
   stroke-dashoffset: 0;
-  transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Section Common Styles */
@@ -1899,9 +1914,10 @@ textarea.form-control {
   }
 
   .link-h {
-    font-size: 12px;
-    padding: 6px 12px;
-    height: 32px;
+    font-size: 13px;
+    padding: 8px 16px;
+    height: auto;
+    border-radius: 50px;
   }
 
   .resume-download-btn {
@@ -1935,8 +1951,18 @@ textarea.form-control {
     padding: 1.0rem 1rem;
     border-radius: 0;
   }
+  .bottom-connect-bar.footer-inline {
+    padding: 0.25rem 0.75rem;
+    margin-top: 0;
+  }
+  .bottom-connect-bar.footer-inline .connect-btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.65rem;
+  }
+  .bottom-connect-bar.footer-inline .copyright-text {
+    font-size: 0.6rem;
+  }
 }
-
 
 /* Add underline above footer */
 footer {
@@ -1951,15 +1977,13 @@ footer {
   flex: 1;
   gap: 1.5rem;
   /* spacing between resume and tech stack */
-  padding-top: 1.5rem;
+  padding-top: 2rem;
   /* was 2.5rem */
   padding-bottom: 0;
-  margin-top: -5.5rem;
-  /* pull the underline upwards further to match centered text */
+  margin-top: 0;
+  /* flow naturally under text */
   overflow: visible;
   /* allowed visible layout */
-  border-top: 1px solid var(--border-color);
-  /* simple container-width border */
   max-width: 744px;
   width: 100%;
 }
@@ -2453,11 +2477,13 @@ body:has(.about-intro-text) .bottom-sections {
   position: relative !important;
   bottom: auto !important;
   width: 100% !important;
-  margin-top: 3rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
 }
 
-.traits-section + .bottom-connect-bar.footer-inline {
-  margin-top: 5rem;
+.traits-section+.bottom-connect-bar.footer-inline {
+  margin-top: 5.4rem;
 }
 
 html:has(body .footer-inline) {
@@ -3571,8 +3597,8 @@ a.project-item:hover {
   visibility: visible;
   transform: translateY(0);
   transition: transform 0.75s cubic-bezier(0.76, 0, 0.24, 1),
-              opacity 0.4s ease 0.55s,
-              visibility 0s linear 0.75s;
+    opacity 0.4s ease 0.55s,
+    visibility 0s linear 0.75s;
   overflow: hidden;
 }
 
@@ -3622,15 +3648,7 @@ a.project-item:hover {
   width: 96px;
   height: 96px;
   object-fit: cover;
-  transform: translateY(100%);
-  animation: loaderImgRise 1s cubic-bezier(.22, 1, .36, 1) 0.5s forwards;
   display: block;
-}
-
-@keyframes loaderImgRise {
-  to {
-    transform: translateY(0);
-  }
 }
 
 @keyframes loaderFadeIn {
@@ -3708,7 +3726,9 @@ a.project-item:hover {
 
 
 /* ── Custom Cursor ── */
-* { cursor: none; }
+* {
+  cursor: none;
+}
 
 #cursor {
   position: fixed;
@@ -3720,9 +3740,9 @@ a.project-item:hover {
   z-index: 9999;
   transform: translate(-50%, -50%);
   mix-blend-mode: difference;
-  transition: width  .3s cubic-bezier(.34, 1.56, .64, 1),
-              height .3s cubic-bezier(.34, 1.56, .64, 1),
-              opacity .2s ease;
+  transition: width .3s cubic-bezier(.34, 1.56, .64, 1),
+    height .3s cubic-bezier(.34, 1.56, .64, 1),
+    opacity .2s ease;
   will-change: left, top, width, height;
   opacity: 0;
 }
@@ -3743,18 +3763,75 @@ body.loading #cursor {
 }
 
 /* ── Stats Bar Section ── */
-.stats-bar { display: flex; align-items: center; flex-wrap: wrap; padding: 1rem 0; }
-.stat-item { display: flex; flex-direction: column; align-items: center; padding: 0 32px; gap: 5px; }
-.stat-item:first-child { padding-left: 0; }
-.stat-num { display: flex; align-items: center; gap: 2px; line-height: 1; }
-.zero { color: #444; font-size: 28px; font-weight: 500; }
-.digit { color: var(--text-primary); font-size: 28px; font-weight: 500; letter-spacing: 2px; }
-.stat-plus { font-size: 26px; font-weight: 900; color: var(--text-primary); margin-left: 2px; display: flex; align-items: center; }
-.stat-label { font-size: 12px; color: #888; text-align: center; letter-spacing: 0.04em; }
-.stats-bar .divider { width: 2px; height: 44px; background: #333; flex-shrink: 0; }
+.stats-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 1rem 0;
+}
 
-[data-theme="light"] .zero { color: #c5c5c9; }
-[data-theme="light"] .stats-bar .divider { background: var(--border-color); }
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 32px;
+  gap: 5px;
+}
+
+.stat-item:first-child {
+  padding-left: 0;
+}
+
+.stat-num {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  line-height: 1;
+}
+
+.zero {
+  color: #444;
+  font-size: 28px;
+  font-weight: 500;
+}
+
+.digit {
+  color: var(--text-primary);
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: 2px;
+}
+
+.stat-plus {
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--text-primary);
+  margin-left: 2px;
+  display: flex;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #888;
+  text-align: center;
+  letter-spacing: 0.04em;
+}
+
+.stats-bar .divider {
+  width: 2px;
+  height: 44px;
+  background: #333;
+  flex-shrink: 0;
+}
+
+[data-theme="light"] .zero {
+  color: #c5c5c9;
+}
+
+[data-theme="light"] .stats-bar .divider {
+  background: var(--border-color);
+}
 
 /* ── Traits Section (Three Cards) ── */
 .traits-section {
@@ -3809,9 +3886,4 @@ body.loading #cursor {
     grid-template-columns: 1fr;
     gap: 12px;
   }
-}
-
-.page-home .bottom-connect-bar {
-  padding-top: 0.8rem;
-  padding-bottom: 0.8rem;
 }

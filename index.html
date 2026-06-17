@@ -7,7 +7,7 @@
 
   <!-- ===== VERCEL ANALYTICS ===== -->
   <script>
-      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
   </script>
   <script defer src="/_vercel/insights/script.js"></script>
 
@@ -18,7 +18,9 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Quantico:ital,wght@0,400;0,700;1,400;1,700&family=Viga&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Quantico:ital,wght@0,400;0,700;1,400;1,700&family=Viga&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
@@ -26,9 +28,9 @@
   <link rel="manifest" href="assets/favicon/site.webmanifest">
   <link rel="shortcut icon" href="assets/favicon/favicon.ico">
   <script>
-    (function() {
+    (function () {
       const isReload = (window.performance && window.performance.getEntriesByType && window.performance.getEntriesByType('navigation')[0] && window.performance.getEntriesByType('navigation')[0].type === 'reload') ||
-                       (window.performance && window.performance.navigation && window.performance.navigation.type === 1);
+        (window.performance && window.performance.navigation && window.performance.navigation.type === 1);
       if (sessionStorage.getItem('portfolio-loaded') && !isReload) {
         document.documentElement.classList.add('skip-loader');
       }
@@ -95,105 +97,28 @@
             </span>
           </div>
 
-          <p style="font-size: 1.25rem; color: var(--text-secondary); margin-bottom: 0.25rem; font-family: var(--font-body); line-height: 1.6;">
-            I'm a <span class="typewriter-text" style="color: var(--text-primary); font-weight: 600; font-family: var(--font-heading);"></span><span class="typewriter-cursor"></span>
+          <p
+            style="font-size: 1.25rem; color: var(--text-secondary); margin-bottom: 0.25rem; font-family: var(--font-body); line-height: 1.6;">
+            I'm a <span class="typewriter-text"
+              style="color: var(--text-primary); font-weight: 600; font-family: var(--font-heading);"></span><span
+              class="typewriter-cursor"></span>
           </p>
           <p class="hero-desc">
-           I build things that think, react, and look good doing it. > Bridging AI, hardware, and software to turn complex ideas into seamless, intelligent systems.
+            I build things that think, react, and look good doing it. > Bridging AI, hardware, and software to turn
+            complex ideas into seamless, intelligent systems.
           </p>
 
-          <!-- Social Links Row -->
-          <div class="about__links reveal-item" data-delay="5" style="margin-bottom: 6.4rem;">
-              <!-- Email -->
-              <a class="link-h" href="mailto:mohityt175@gmail.com">
-                  <span class="icon-wrap">
-                      <svg class="icon-fill" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                          <rect x="2" y="4" width="20" height="16" rx="2" />
-                          <path fill="#1a1a1a" d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                      </svg>
-                      <svg class="icon-outline" width="16" height="16" viewBox="0 0 24 24">
-                          <rect x="2" y="4" width="20" height="16" rx="2" />
-                          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                      </svg>
-                  </span>
-                  Email
-              </a>
-
-              <!-- GitHub -->
-              <a class="link-h" href="https://github.com/mohitroscen" target="_blank" rel="noopener">
-                  <span class="icon-wrap">
-                      <svg class="icon-fill" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                          <path
-                              d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4 11.5 11.5 0 0 1 3 .4c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.57 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z" />
-                      </svg>
-                      <svg class="icon-outline" width="16" height="16" viewBox="0 0 24 24">
-                          <path
-                              d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
-                      </svg>
-                  </span>
-                  GitHub
-              </a>
-
-              <!-- LinkedIn -->
-              <a class="link-h" href="https://www.linkedin.com/in/mohit-roscen-389367293/" target="_blank" rel="noopener">
-                  <span class="icon-wrap">
-                      <svg class="icon-fill" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7H10V9h4v1.5a4 4 0 0 1 2-.5z" />
-                          <rect x="2" y="9" width="4" height="12" />
-                          <circle cx="4" cy="4" r="2" />
-                      </svg>
-                      <svg class="icon-outline" width="16" height="16" viewBox="0 0 24 24">
-                          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7H10V9h4v1.5a4 4 0 0 1 2-.5z" />
-                          <rect x="2" y="9" width="4" height="12" />
-                          <circle cx="4" cy="4" r="2" />
-                      </svg>
-                  </span>
-                  LinkedIn
-              </a>
-
-              <!-- Instagram -->
-              <a class="link-h" href="https://www.instagram.com/neuron.tech_/?hl=en" target="_blank" rel="noopener">
-                  <span class="icon-wrap">
-                      <svg class="icon-fill" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                          <rect x="2" y="2" width="20" height="20" rx="5" />
-                          <circle cx="12" cy="12" r="4" fill="#1a1a1a" />
-                          <circle cx="17.5" cy="6.5" r="1" fill="#1a1a1a" />
-                      </svg>
-                      <svg class="icon-outline" width="16" height="16" viewBox="0 0 24 24">
-                          <rect x="2" y="2" width="20" height="20" rx="5" />
-                          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                      </svg>
-                  </span>
-                  Instagram
-              </a>
-
-              <!-- X (Twitter) -->
-              <a class="link-h" href="https://x.com/mohityt175" target="_blank" rel="noopener">
-                  <span class="icon-wrap">
-                      <svg class="icon-fill" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                          <path
-                              d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.733-8.835L1.254 2.25H8.08l4.26 5.632 5.905-5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                      </svg>
-                      <svg class="icon-outline" width="16" height="16" viewBox="0 0 24 24">
-                          <path
-                              d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.733-8.835L1.254 2.25H8.08l4.26 5.632 5.905-5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                      </svg>
-                  </span>
-                  X/Twitter
-              </a>
-          </div>
         </div>
 
-      <div class="hero-photo-wrapper reveal-media">
-            <img src="assets/img/file_0000000078047208af53d59b7a1b9ac2.png" alt="Mohit Roscen" class="about-photo">
-      </div>
+        <div class="hero-photo-wrapper reveal-media">
+          <img src="assets/img/file_0000000078047208af53d59b7a1b9ac2.png" alt="Mohit Roscen" class="about-photo">
+        </div>
       </div>
     </main>
 
-    <div class="bottom-sections reveal-content" style="padding-top: 0.25rem;">
+    <div class="bottom-sections reveal-content" style="padding-top: 0.25rem; flex: none;">
       <!-- Stats Bar Section -->
-      <div class="stats-bar" style="padding-top: 0; padding-bottom: 0; margin-top: 1.5rem;">
+      <div class="stats-bar" style="padding-top: 0; padding-bottom: 0; margin-top: 0;">
         <div class="stat-item">
           <div class="stat-num">
             <span class="zero">00</span><span class="digit" id="c1">0</span><span class="stat-plus">+</span>
@@ -223,23 +148,103 @@
         <!-- Card 1: Curious -->
         <div class="trait-card">
           <h3 class="trait-title">Curious</h3>
-          <p class="trait-desc">"I love digging into problems until they make sense. Whether it's debugging a tricky bug or learning something new, I'm driven by the 'why' behind things."</p>
+          <p class="trait-desc">"I love digging into problems until they make sense. Whether it's debugging a tricky bug
+            or learning something new, I'm driven by the 'why' behind things."</p>
         </div>
         <!-- Card 2: Night Owl -->
         <div class="trait-card">
           <h3 class="trait-title">Night Owl</h3>
-          <p class="trait-desc">"My best ideas come alive after midnight — fueled by coffee and quiet focus when the world's asleep."</p>
+          <p class="trait-desc">"My best ideas come alive after midnight — fueled by coffee and quiet focus when the
+            world's asleep."</p>
         </div>
         <!-- Card 3: Detail-Oriented -->
         <div class="trait-card">
           <h3 class="trait-title">Detail-Oriented</h3>
-          <p class="trait-desc">"From clean code to pixel-perfect UI, I care about the small things that make a big difference in the final product."</p>
+          <p class="trait-desc">"From clean code to pixel-perfect UI, I care about the small things that make a big
+            difference in the final product."</p>
         </div>
       </div>
+
+        <!-- Social Links Row -->
+        <div class="about__links" style="margin-top: 1.5rem;">
+          <!-- Email -->
+          <a class="link-h" href="mailto:mohityt175@gmail.com">
+            <span class="icon-wrap">
+              <svg class="icon-fill" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <path fill="#1a1a1a" d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+              </svg>
+              <svg class="icon-outline" width="16" height="16" viewBox="0 0 24 24">
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+              </svg>
+            </span>
+          </a>
+
+          <!-- GitHub -->
+          <a class="link-h" href="https://github.com/mohitroscen" target="_blank" rel="noopener">
+            <span class="icon-wrap">
+              <svg class="icon-fill" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4 11.5 11.5 0 0 1 3 .4c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.57 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z" />
+              </svg>
+              <svg class="icon-outline" width="16" height="16" viewBox="0 0 24 24">
+                <path
+                  d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+              </svg>
+            </span>
+          </a>
+
+          <!-- LinkedIn -->
+          <a class="link-h" href="https://www.linkedin.com/in/mohit-roscen-389367293/" target="_blank" rel="noopener">
+            <span class="icon-wrap">
+              <svg class="icon-fill" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7H10V9h4v1.5a4 4 0 0 1 2-.5z" />
+                <rect x="2" y="9" width="4" height="12" />
+                <circle cx="4" cy="4" r="2" />
+              </svg>
+              <svg class="icon-outline" width="16" height="16" viewBox="0 0 24 24">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7H10V9h4v1.5a4 4 0 0 1 2-.5z" />
+                <rect x="2" y="9" width="4" height="12" />
+                <circle cx="4" cy="4" r="2" />
+              </svg>
+            </span>
+          </a>
+
+          <!-- Instagram -->
+          <a class="link-h" href="https://www.instagram.com/neuron.tech_/?hl=en" target="_blank" rel="noopener">
+            <span class="icon-wrap">
+              <svg class="icon-fill" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="2" y="2" width="20" height="20" rx="5" />
+                <circle cx="12" cy="12" r="4" fill="#1a1a1a" />
+                <circle cx="17.5" cy="6.5" r="1" fill="#1a1a1a" />
+              </svg>
+              <svg class="icon-outline" width="16" height="16" viewBox="0 0 24 24">
+                <rect x="2" y="2" width="20" height="20" rx="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+              </svg>
+            </span>
+          </a>
+
+          <!-- X (Twitter) -->
+          <a class="link-h" href="https://x.com/mohityt175" target="_blank" rel="noopener">
+            <span class="icon-wrap">
+              <svg class="icon-fill" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.733-8.835L1.254 2.25H8.08l4.26 5.632 5.905-5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
+              <svg class="icon-outline" width="16" height="16" viewBox="0 0 24 24">
+                <path
+                  d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.733-8.835L1.254 2.25H8.08l4.26 5.632 5.905-5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
+            </span>
+          </a>
+        </div>
     </div>
 
     <!-- Bottom Footer connect bar -->
-    <div class="bottom-connect-bar reveal-content footer-inline">
+    <div class="bottom-connect-bar">
       <a href="/contact" class="connect-btn">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
           stroke="currentColor">
