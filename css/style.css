@@ -754,16 +754,19 @@ h1 {
   border-radius: 50px;
   padding: 8px 16px;
   height: auto;
-  color: var(--text-primary) !important; /* Text is static white */
+  color: var(--text-primary) !important;
+  /* Text is static white */
 }
 
 .about__links .link-h .icon-wrap {
-  color: var(--text-secondary); /* Icon starts grey */
+  color: var(--text-secondary);
+  /* Icon starts grey */
   transition: color 0.3s ease;
 }
 
 .about__links .link-h:hover .icon-wrap {
-  color: var(--text-primary); /* Icon turns white on hover */
+  color: var(--text-primary);
+  /* Icon turns white on hover */
 }
 
 .link-h:hover {
@@ -1951,14 +1954,17 @@ textarea.form-control {
     padding: 1.0rem 1rem;
     border-radius: 0;
   }
+
   .bottom-connect-bar.footer-inline {
     padding: 0.25rem 0.75rem;
     margin-top: 0;
   }
+
   .bottom-connect-bar.footer-inline .connect-btn {
     padding: 0.25rem 0.5rem;
     font-size: 0.65rem;
   }
+
   .bottom-connect-bar.footer-inline .copyright-text {
     font-size: 0.6rem;
   }
@@ -2189,6 +2195,99 @@ body:has(.about-intro-text) .bottom-sections {
   .b-funny-line {
     font-size: 9.5px;
   }
+}
+
+/* Folder Grid Layout */
+.folder-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4rem 1.5rem;
+  padding: 2rem 0;
+}
+
+@media (max-width: 900px) {
+  .folder-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .folder-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.folder-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 1rem;
+  border-radius: 12px;
+}
+
+.folder-item:hover {
+  transform: scale(1.05);
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.folder-item:hover .click-hint {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.folder-icon {
+  width: 85px;
+  height: 85px;
+  margin-right: 2.5rem;
+  margin-bottom: 0;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.folder-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+}
+
+.folder-item .click-hint {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 4px;
+}
+
+.folder-title {
+  font-size: 1.05rem;
+  font-weight: 500;
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  text-align: left;
+  line-height: 1.3;
+}
+
+.folder-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  text-align: left;
+  line-height: 1.3;
+  margin-top: 0.15rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.project-item {
+  width: 100%;
 }
 
 /* Education List */
@@ -3261,6 +3360,10 @@ body:has(.footer-inline) main {
   color: var(--text-secondary);
 }
 
+.click-hint-arrow {
+  color: var(--text-secondary);
+}
+
 .project-item:hover {
   border-top-color: var(--text-primary);
 }
@@ -3283,8 +3386,8 @@ body:has(.footer-inline) main {
 
 .preview-img {
   position: fixed;
-  width: 340px;
-  height: 215px;
+  width: 260px;
+  height: 165px;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);

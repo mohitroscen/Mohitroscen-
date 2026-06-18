@@ -1,0 +1,24 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#drop-shadow)">
+  <!-- Back flap -->
+  <path d="M22 55C22 45.0589 30.0589 37 40 37H85.5C92.5 37 98.5 40.5 102 46.5L108 57H216C225.941 57 234 65.0589 234 75V200C234 209.941 225.941 218 216 218H40C30.0589 218 22 209.941 22 200V55Z" fill="#0B75E3"/>
+  
+  <!-- Paper Insert -->
+  <rect x="28" y="70" width="200" height="135" rx="8" fill="#FFFFFF"/>
+  
+  <!-- Front Flap -->
+  <path d="M22 100C22 88.9543 30.9543 80 42 80H214C225.046 80 234 88.9543 234 100V200C234 211.046 225.046 220 214 220H42C30.9543 220 22 211.046 22 200V100Z" fill="url(#front-gradient)"/>
+  
+  <!-- Front Flap Top Edge Highlight -->
+  <path d="M42 81H214C224.493 81 233 89.5066 233 100V101C233 90.5066 224.493 82 214 82H42C31.5066 82 23 90.5066 23 101V100C23 89.5066 31.5066 81 42 81Z" fill="#8AC2FF"/>
+</g>
+<defs>
+  <linearGradient id="front-gradient" x1="128" y1="80" x2="128" y2="220" gradientUnits="userSpaceOnUse">
+    <stop offset="0%" stop-color="#2998FF"/>
+    <stop offset="100%" stop-color="#0A64D9"/>
+  </linearGradient>
+  <filter id="drop-shadow" x="0" y="30" width="256" height="226" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+    <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="black" flood-opacity="0.35"/>
+  </filter>
+</defs>
+</svg>
