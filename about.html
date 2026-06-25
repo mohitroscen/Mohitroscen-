@@ -27,38 +27,9 @@
   <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
   <link rel="manifest" href="assets/favicon/site.webmanifest">
   <link rel="shortcut icon" href="assets/favicon/favicon.ico">
-  <script>
-    (function() {
-      const isReload = (window.performance && window.performance.getEntriesByType && window.performance.getEntriesByType('navigation')[0] && window.performance.getEntriesByType('navigation')[0].type === 'reload') ||
-                       (window.performance && window.performance.navigation && window.performance.navigation.type === 1);
-      if (sessionStorage.getItem('portfolio-loaded') && !isReload) {
-        document.documentElement.classList.add('skip-loader');
-      }
-    })();
-  </script>
 </head>
 
-<body class="loading">
-  <!-- Loader Overlay -->
-  <div id="loader-overlay" class="loader-overlay">
-    <div class="loader-container">
-      <div class="loader-avatar-wrap">
-        <div class="loader-avatar-inner">
-          <video src="assets/img/1781456302945569.mp4" autoplay loop muted playsinline></video>
-        </div>
-      </div>
-      <div class="loader-name">FLX</div>
-      <div class="loader-bar-section">
-        <div class="loader-bar-track">
-          <div class="loader-bar-fill" id="bar-fill"></div>
-        </div>
-        <div class="loader-bar-labels">
-          <span class="loader-bar-msg" id="bar-msg">Initializing...</span>
-          <span class="loader-bar-pct" id="bar-pct">0%</span>
-        </div>
-      </div>
-    </div>
-  </div>
+<body>
 
   <!-- Grain Overlay for visual texture -->
   <div class="grain-overlay"></div>
@@ -69,9 +40,27 @@
     <header class="reveal-header">
       <a href="/" class="logo">FLX</a>
       <nav class="nav-menu" id="nav-menu">
-        <a href="/about" class="nav-link active">About</a>
-        <a href="/projects" class="nav-link">Projects</a>
-        <a href="/contact" class="nav-link">Contact</a>
+        <a href="/about" class="nav-link link-h">
+          <span class="icon-wrap">
+            <svg class="icon-fill" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            <svg class="icon-outline" width="16" height="16" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+          </span>
+          <span class="social-text-wrapper"><span class="social-text-inner" data-text="About">About</span></span>
+        </a>
+        <a href="/projects" class="nav-link link-h">
+          <span class="icon-wrap">
+            <svg class="icon-fill" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/></svg>
+            <svg class="icon-outline" width="16" height="16" viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/></svg>
+          </span>
+          <span class="social-text-wrapper"><span class="social-text-inner" data-text="Projects">Projects</span></span>
+        </a>
+        <a href="/contact" class="nav-link link-h">
+          <span class="icon-wrap">
+            <svg class="icon-fill" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            <svg class="icon-outline" width="16" height="16" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10z"/></svg>
+          </span>
+          <span class="social-text-wrapper"><span class="social-text-inner" data-text="Contact">Contact</span></span>
+        </a>
       </nav>
       <div class="header-right">
         <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
@@ -92,7 +81,7 @@
           style="color: var(--text-secondary); font-size: 2rem; margin-bottom: 1.5rem; letter-spacing: -0.02em; font-family: var(--font-viga);">
           About Me</h2>
         <h1 class="about-subtitle">
-          I'm <span class="name-span">Mohit Roscen</span>
+          I'm <span class="name-span pattern-text" data-shadow="Mohit Roscen">Mohit Roscen</span>
         </h1>
         <p class="hero-subtitle"
           style="font-size: 1.25rem; color: var(--text-secondary); margin-bottom: 1.25rem; font-family: var(--font-body); line-height: 1.6;">
@@ -103,82 +92,82 @@
         <!-- Social Links Row -->
         <div class="about__links" style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-color);">
           <!-- Email -->
-          <a class="link-h" href="mailto:mohityt175@gmail.com">
-            <span class="icon-wrap">
-              <svg class="icon-fill" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <rect x="2" y="4" width="20" height="16" rx="2" />
-                <path fill="#1a1a1a" d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-              </svg>
-              <svg class="icon-outline" width="16" height="16" viewBox="0 0 24 24">
-                <rect x="2" y="4" width="20" height="16" rx="2" />
-                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+          <a class="link-h link-email" href="mailto:mohityt175@gmail.com">
+            <span class="icon-wrap" style="color: inherit;">
+              <svg width="24" height="24" viewBox="0 0 192 192" class="icon-gmail" style="fill: currentColor;">
+                <defs>
+                  <linearGradient id="gmail-grad-a" x1="165" x2="165" y1="44" y2="166" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#60d673"/>
+                    <stop offset=".17" stop-color="#42c868"/>
+                    <stop offset=".39" stop-color="#0ebc5f"/>
+                    <stop offset=".62" stop-color="#00a9bb"/>
+                    <stop offset=".86" stop-color="#3c90ff"/>
+                    <stop offset="1" stop-color="#3186ff"/>
+                  </linearGradient>
+                  <linearGradient id="gmail-grad-b" x1="8" x2="184" y1="46.13" y2="46.13" gradientUnits="userSpaceOnUse">
+                    <stop offset=".08" stop-color="#ff63a0"/>
+                    <stop offset=".3" stop-color="#fc413d"/>
+                    <stop offset=".5" stop-color="#fc413d"/>
+                    <stop offset=".65" stop-color="#fc413d"/>
+                    <stop offset=".72" stop-color="#fc5c30"/>
+                    <stop offset=".86" stop-color="#feb10c"/>
+                    <stop offset=".91" stop-color="#fec700"/>
+                    <stop offset=".96" stop-color="#ffdb0f"/>
+                  </linearGradient>
+                </defs>
+                <path class="gmail-path1" d="M146 44h38v110c0 6.627-5.373 12-12 12h-20a6 6 0 0 1-6-6z"/>
+                <path class="gmail-path2" d="M46 44H8v110c0 6.627 5.373 12 12 12h20a6 6 0 0 0 6-6z"/>
+                <path class="gmail-path3" d="M39.226 30.456c-8.033-6.752-20.018-5.714-26.77 2.319-6.752 8.032-5.714 20.017 2.319 26.77l76.078 63.949a8 8 0 0 0 10.295 0l76.078-63.95c8.032-6.752 9.07-18.737 2.318-26.77-6.752-8.032-18.737-9.07-26.769-2.318L96 78.18z"/>
               </svg>
             </span>
-            Email
+            <span class="social-text-wrapper"><span class="social-text-inner" data-text="Email">Email</span></span>
           </a>
 
           <!-- GitHub -->
-          <a class="link-h" href="https://github.com/mohitroscen" target="_blank" rel="noopener">
-            <span class="icon-wrap">
-              <svg class="icon-fill" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4 11.5 11.5 0 0 1 3 .4c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.57 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z" />
-              </svg>
-              <svg class="icon-outline" width="16" height="16" viewBox="0 0 24 24">
-                <path
-                  d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+          <a class="link-h link-github" href="https://github.com/mohitroscen" target="_blank" rel="noopener">
+            <span class="icon-wrap" style="color: inherit;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4 11.5 11.5 0 0 1 3 .4c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.57 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z" />
               </svg>
             </span>
-            GitHub
+            <span class="social-text-wrapper"><span class="social-text-inner" data-text="GitHub">GitHub</span></span>
           </a>
 
           <!-- LinkedIn -->
-          <a class="link-h" href="https://www.linkedin.com/in/mohit-roscen-389367293/" target="_blank" rel="noopener">
-            <span class="icon-wrap">
-              <svg class="icon-fill" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7H10V9h4v1.5a4 4 0 0 1 2-.5z" />
-                <rect x="2" y="9" width="4" height="12" />
-                <circle cx="4" cy="4" r="2" />
-              </svg>
-              <svg class="icon-outline" width="16" height="16" viewBox="0 0 24 24">
-                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7H10V9h4v1.5a4 4 0 0 1 2-.5z" />
-                <rect x="2" y="9" width="4" height="12" />
-                <circle cx="4" cy="4" r="2" />
+          <a class="link-h link-linkedin" href="https://www.linkedin.com/in/mohit-roscen-389367293/" target="_blank" rel="noopener">
+            <span class="icon-wrap" style="color: inherit;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
               </svg>
             </span>
-            LinkedIn
+            <span class="social-text-wrapper"><span class="social-text-inner" data-text="LinkedIn">LinkedIn</span></span>
           </a>
 
           <!-- Instagram -->
-          <a class="link-h" href="https://www.instagram.com/neuron.tech_/?hl=en" target="_blank" rel="noopener">
-            <span class="icon-wrap">
-              <svg class="icon-fill" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <rect x="2" y="2" width="20" height="20" rx="5" />
-                <circle cx="12" cy="12" r="4" fill="#1a1a1a" />
-                <circle cx="17.5" cy="6.5" r="1" fill="#1a1a1a" />
-              </svg>
-              <svg class="icon-outline" width="16" height="16" viewBox="0 0 24 24">
-                <rect x="2" y="2" width="20" height="20" rx="5" />
-                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+          <a class="link-h link-instagram" href="https://www.instagram.com/neuron.tech_/?hl=en" target="_blank" rel="noopener">
+            <span class="icon-wrap" style="color: inherit;">
+              <svg width="24" height="24" viewBox="0 0 24 24" class="icon-ig" fill="currentColor">
+                <defs>
+                  <linearGradient id="ig-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#f9ce34" />
+                    <stop offset="50%" stop-color="#ee2a7b" />
+                    <stop offset="100%" stop-color="#6228d7" />
+                  </linearGradient>
+                </defs>
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
               </svg>
             </span>
-            Instagram
+            <span class="social-text-wrapper"><span class="social-text-inner" data-text="Instagram">Instagram</span></span>
           </a>
 
           <!-- X (Twitter) -->
-          <a class="link-h" href="https://x.com/mohityt175" target="_blank" rel="noopener">
-            <span class="icon-wrap">
-              <svg class="icon-fill" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.733-8.835L1.254 2.25H8.08l4.26 5.632 5.905-5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-              </svg>
-              <svg class="icon-outline" width="16" height="16" viewBox="0 0 24 24">
-                <path
-                  d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.733-8.835L1.254 2.25H8.08l4.26 5.632 5.905-5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+          <a class="link-h link-twitter" href="https://x.com/mohityt175" target="_blank" rel="noopener">
+            <span class="icon-wrap" style="color: inherit;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.733-8.835L1.254 2.25H8.08l4.26 5.632 5.905-5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
               </svg>
             </span>
-            X/Twitter
+            <span class="social-text-wrapper"><span class="social-text-inner" data-text="X/Twitter">X/Twitter</span></span>
           </a>
         </div>
 
@@ -639,57 +628,8 @@
   </div>
 
   <script src="js/main.js?v=1.0.3"></script>
-  <script>
-    (function () {
-      const wrap = document.querySelector('.scroll-arrow-wrap');
-      const arrow = document.getElementById('scrollArrow');
 
-      const BASE_BOTTOM = 36;  // px — normal resting position
-      const RING_RADIUS = 20;  // small clearance so rings don't clip footer
-      const FOOTER_GAP = 8;   // tight breathing room above footer
 
-      const THRESHOLD = 120;
-
-      function isNearBottom() {
-        return window.innerHeight + window.scrollY >= document.body.scrollHeight - THRESHOLD;
-      }
-
-      function updateArrow() {
-        if (isNearBottom()) {
-          arrow.classList.add('is-up');
-          arrow.setAttribute('aria-label', 'Back to top');
-        } else {
-          arrow.classList.remove('is-up');
-          arrow.setAttribute('aria-label', 'Scroll down');
-        }
-
-        // Lift the whole wrap (arrow + rings) above the footer
-        const footer = document.querySelector('.bottom-connect-bar, footer');
-        if (footer) {
-          const footerRect = footer.getBoundingClientRect();
-          // Distance from bottom of viewport to top of footer
-          const distFromBottom = window.innerHeight - footerRect.top;
-          const needed = distFromBottom + RING_RADIUS + FOOTER_GAP;
-          const newBottom = Math.max(BASE_BOTTOM, needed);
-          wrap.style.bottom = newBottom + 'px';
-        } else {
-          wrap.style.bottom = BASE_BOTTOM + 'px';
-        }
-      }
-
-      arrow.addEventListener('click', function () {
-        if (isNearBottom()) {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else {
-          window.scrollBy({ top: window.innerHeight * 0.85, behavior: 'smooth' });
-        }
-      });
-
-      window.addEventListener('scroll', updateArrow, { passive: true });
-      window.addEventListener('resize', updateArrow, { passive: true });
-      updateArrow();
-    })();
-  </script>
 </body>
 
 </html>

@@ -26,38 +26,9 @@
   <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
   <link rel="manifest" href="assets/favicon/site.webmanifest">
   <link rel="shortcut icon" href="assets/favicon/favicon.ico">
-  <script>
-    (function () {
-      const isReload = (window.performance && window.performance.getEntriesByType && window.performance.getEntriesByType('navigation')[0] && window.performance.getEntriesByType('navigation')[0].type === 'reload') ||
-        (window.performance && window.performance.navigation && window.performance.navigation.type === 1);
-      if (sessionStorage.getItem('portfolio-loaded') && !isReload) {
-        document.documentElement.classList.add('skip-loader');
-      }
-    })();
-  </script>
 </head>
 
-<body class="loading">
-  <!-- Loader Overlay -->
-  <div id="loader-overlay" class="loader-overlay">
-    <div class="loader-container">
-      <div class="loader-avatar-wrap">
-        <div class="loader-avatar-inner">
-          <video src="assets/img/1781456302945569.mp4" autoplay loop muted playsinline></video>
-        </div>
-      </div>
-      <div class="loader-name">FLX</div>
-      <div class="loader-bar-section">
-        <div class="loader-bar-track">
-          <div class="loader-bar-fill" id="bar-fill"></div>
-        </div>
-        <div class="loader-bar-labels">
-          <span class="loader-bar-msg" id="bar-msg">Initializing...</span>
-          <span class="loader-bar-pct" id="bar-pct">0%</span>
-        </div>
-      </div>
-    </div>
-  </div>
+<body>
 
   <!-- Grain Overlay for visual texture -->
   <div class="grain-overlay"></div>
@@ -68,9 +39,27 @@
     <header class="reveal-header">
       <a href="/" class="logo">FLX</a>
       <nav class="nav-menu" id="nav-menu">
-        <a href="/about" class="nav-link">About</a>
-        <a href="/projects" class="nav-link active">Projects</a>
-        <a href="/contact" class="nav-link">Contact</a>
+        <a href="/about" class="nav-link link-h">
+          <span class="icon-wrap">
+            <svg class="icon-fill" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            <svg class="icon-outline" width="16" height="16" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+          </span>
+          <span class="social-text-wrapper"><span class="social-text-inner" data-text="About">About</span></span>
+        </a>
+        <a href="/projects" class="nav-link link-h">
+          <span class="icon-wrap">
+            <svg class="icon-fill" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/></svg>
+            <svg class="icon-outline" width="16" height="16" viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/></svg>
+          </span>
+          <span class="social-text-wrapper"><span class="social-text-inner" data-text="Projects">Projects</span></span>
+        </a>
+        <a href="/contact" class="nav-link link-h">
+          <span class="icon-wrap">
+            <svg class="icon-fill" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            <svg class="icon-outline" width="16" height="16" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10z"/></svg>
+          </span>
+          <span class="social-text-wrapper"><span class="social-text-inner" data-text="Contact">Contact</span></span>
+        </a>
       </nav>
       <div class="header-right">
         <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
@@ -192,52 +181,8 @@
   </div>
 
   <script src="js/main.js?v=1.0.3"></script>
-  <script>
-    const previews = [
-      { label: "AI Farming Drone", bg: "url('assets/img/project1.jpg') center/cover" },
-      { label: "AI Traffic Light System", bg: "url('assets/img/project2.jpg') center/cover" },
-      { label: "ICU-Alert System", bg: "url('assets/img/project3.jpg') center/cover" },
-      { label: "AI Weather Prediction", bg: "url('assets/img/project4.jpeg') center/cover" },
-      { label: "AI Medic Chatbot", bg: "url('assets/img/project5.jpg') center/cover" },
-      { label: "Multipurpose Rover", bg: "url('assets/img/project6.jpg') center/cover" },
-    ];
 
-    previews.forEach(p => {
-      const img = new Image();
-      const match = p.bg.match(/url\('(.*?)'\)/);
-      if (match && match[1]) {
-        img.src = match[1];
-      }
-    });
 
-    const preview = document.getElementById('preview');
-    const previewInner = document.getElementById('preview-inner');
-    document.querySelectorAll('.folder-item').forEach(item => {
-      const projectIndex = item.dataset.project;
-      if (projectIndex && previews[parseInt(projectIndex)]) {
-        const p = previews[parseInt(projectIndex)];
-        item.addEventListener('mouseenter', () => {
-          previewInner.style.background = p.bg;
-          preview.classList.add('visible');
-        });
-        item.addEventListener('mouseleave', () => preview.classList.remove('visible'));
-      }
-    });
-
-    document.addEventListener('mousemove', e => {
-      if (!preview.classList.contains('visible')) return;
-      const padding = 15;
-      const halfWidth = 130;
-      const topOffset = 99;
-      const bottomOffset = 66;
-
-      const x = Math.max(halfWidth + padding, Math.min(e.clientX, window.innerWidth - halfWidth - padding));
-      const y = Math.max(topOffset + padding, Math.min(e.clientY, window.innerHeight - bottomOffset - padding));
-
-      preview.style.left = x + 'px';
-      preview.style.top = y + 'px';
-    });
-  </script>
 </body>
 
 </html>

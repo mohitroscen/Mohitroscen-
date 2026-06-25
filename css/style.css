@@ -290,7 +290,7 @@ main {
   flex-grow: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-top: 2.5rem;
+  padding-top: 2rem;
   /* gap between navbar border and hero title */
   padding-bottom: 3.5rem;
   display: flex;
@@ -526,7 +526,7 @@ body.menu-open .menu-overlay {
   display: block;
   /* image is absolutely positioned; only left content flows */
   margin: 0;
-  margin-top: 5rem;
+  margin-top: 4rem;
   padding-right: 40%;
   /* reserve space so text doesn't overlap image */
 }
@@ -645,6 +645,54 @@ h1 {
   filter: brightness(1.1);
 }
 
+.pattern-text {
+  background: var(--name-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  position: relative;
+  display: inline-block;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.pattern-text:hover {
+  opacity: 1;
+  filter: none;
+}
+
+.pattern-text::after {
+  content: attr(data-shadow);
+  position: absolute;
+  top: 0.06em;
+  left: 0.08em;
+  z-index: -1;
+  background-size: 0.1em 0.1em;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+  background-image: linear-gradient(45deg,
+      transparent 45%,
+      var(--text-primary) 45%,
+      var(--text-primary) 55%,
+      transparent 0);
+  animation: shadanim 5s linear infinite;
+  white-space: nowrap;
+}
+
+@keyframes shadanim {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: -1em 1em;
+  }
+}
+
+
 /* Audio Pronunciation Wave Button */
 .pronounce-btn {
   background: transparent;
@@ -749,24 +797,120 @@ h1 {
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Apply pill shape to about page links with text */
+/* Apply pill shape to about page links and nav menu links */
 .about__links .link-h {
   border-radius: 50px;
   padding: 8px 16px;
   height: auto;
-  color: var(--text-primary) !important;
-  /* Text is static white */
+  color: var(--text-secondary) !important;
+  /* Text starts grey, becomes white on hover via pseudo element */
+  overflow: visible;
+  /* Override any inherited hidden overflow */
+  display: inline-flex;
+  /* Override .nav-link inline-block from bottom of file */
 }
 
-.about__links .link-h .icon-wrap {
+/* Nav menu links are icon-only */
+.nav-menu .nav-link.link-h {
+  border-radius: 50%;
+  padding: 10px;
+  width: 54px;
+  height: 54px;
+  color: var(--text-secondary) !important;
+  overflow: visible;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-menu .nav-link.link-h .icon-wrap {
+  width: 30px;
+  height: 30px;
+}
+
+.nav-menu .nav-link.link-h .social-text-wrapper {
+  display: none !important;
+}
+
+.about__links .link-h .icon-wrap,
+.nav-menu .link-h .icon-wrap {
   color: var(--text-secondary);
   /* Icon starts grey */
   transition: color 0.3s ease;
 }
 
-.about__links .link-h:hover .icon-wrap {
+.about__links .link-h:hover .icon-wrap,
+.nav-menu .link-h:hover .icon-wrap,
+.nav-menu .link-h.active .icon-wrap {
   color: var(--text-primary);
-  /* Icon turns white on hover */
+  /* Default hover color (used by GitHub/Twitter) */
+}
+
+/* Social Link Brand Colors on Hover */
+.about__links .link-email .icon-gmail path {
+  transition: fill 0.3s ease;
+}
+
+.about__links .link-email:hover .icon-gmail .gmail-path1 {
+  fill: url(#gmail-grad-a) !important;
+}
+
+.about__links .link-email:hover .icon-gmail .gmail-path2 {
+  fill: #fc413d !important;
+}
+
+.about__links .link-email:hover .icon-gmail .gmail-path3 {
+  fill: url(#gmail-grad-b) !important;
+}
+
+.about__links .link-linkedin:hover .icon-wrap {
+  color: #0A66C2 !important;
+}
+
+.about__links .link-instagram .icon-ig path {
+  transition: fill 0.3s ease;
+}
+
+.about__links .link-instagram:hover .icon-ig path {
+  fill: url(#ig-gradient) !important;
+}
+
+.about__links .link-github:hover .icon-wrap,
+.about__links .link-twitter:hover .icon-wrap {
+  color: #FFFFFF !important;
+}
+
+/* Social link sliding text effect */
+.social-text-wrapper {
+  overflow: hidden;
+  height: 1.2em;
+  line-height: 1.2em;
+  vertical-align: middle;
+  display: inline-block;
+  margin-top: 2px;
+  /* Visually center uppercase text with icons */
+}
+
+.social-text-inner {
+  display: block;
+  position: relative;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.social-text-inner::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.about__links .link-h:hover .social-text-inner,
+.nav-menu .link-h:hover .social-text-inner,
+.nav-menu .link-h.active .social-text-inner {
+  transform: translateY(-100%);
 }
 
 .link-h:hover {
@@ -1794,7 +1938,7 @@ textarea.form-control {
   }
 
   h1 {
-    font-size: 2.4rem;
+    font-size: 2.8rem;
   }
 
   .status-badge {
@@ -1891,7 +2035,7 @@ textarea.form-control {
   }
 
   h1 {
-    font-size: clamp(1.35rem, 5.8vw, 1.8rem);
+    font-size: clamp(1.8rem, 7vw, 2.4rem);
     white-space: nowrap;
   }
 
@@ -3951,10 +4095,27 @@ body.loading #cursor {
 }
 
 .trait-card {
-  background: rgba(255, 255, 255, 0.02);
-  border: 2px solid var(--border-color);
+  --radius: 14;
+  --border: 3;
+  --backdrop: hsl(0 0% 60% / 0.12);
+  --backup-border: var(--backdrop);
+  --size: 200;
+  --outer: 1;
+  --border-size: calc(var(--border, 2) * 1px);
+  --spotlight-size: calc(var(--size, 150) * 1px);
+  --hue: calc(var(--base) + (var(--xp, 0) * var(--spread, 0)));
+
+  background-image: radial-gradient(var(--spotlight-size) var(--spotlight-size) at calc(var(--x, 0) * 1px) calc(var(--y, 0) * 1px),
+      hsl(var(--hue, 210) calc(var(--saturation, 100) * 1%) calc(var(--lightness, 70) * 1%) / var(--bg-spot-opacity, 0.1)), transparent);
+  background-color: var(--backdrop, transparent);
+  background-size: calc(100% + (2 * var(--border-size))) calc(100% + (2 * var(--border-size)));
+  background-position: 50% 50%;
+  background-attachment: fixed;
+  border: var(--border-size) solid var(--backup-border);
+  position: relative;
+  touch-action: none;
   border-radius: 16px;
-  padding: 1.25rem 1.25rem;
+  padding: 1.25rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -3962,8 +4123,90 @@ body.loading #cursor {
 }
 
 [data-theme="light"] .trait-card {
-  background: rgba(0, 0, 0, 0.02);
+  --backdrop: rgba(0, 0, 0, 0.02);
 }
+
+.trait-card {
+  --border-spot-opacity: 0;
+  --border-light-opacity: 0;
+  --outer: 0;
+}
+
+.trait-card:hover {
+  --border-spot-opacity: 1;
+  --border-light-opacity: 1;
+  --outer: 1;
+}
+
+.trait-card.glow-purple {
+  --base: 280;
+  --spread: 300;
+}
+
+.trait-card.glow-pink {
+  --base: 330;
+  --spread: 300;
+}
+
+.trait-card.glow-yellow {
+  --base: 45;
+  --spread: 300;
+}
+
+[data-glow]::before,
+[data-glow]::after {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  inset: calc(var(--border-size) * -1);
+  border: var(--border-size) solid transparent;
+  border-radius: calc(var(--radius) * 1px);
+  background-attachment: fixed;
+  background-size: calc(100% + (2 * var(--border-size))) calc(100% + (2 * var(--border-size)));
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  mask: linear-gradient(transparent, transparent), linear-gradient(white, white);
+  mask-clip: padding-box, border-box;
+  mask-composite: intersect;
+  -webkit-mask: linear-gradient(transparent, transparent), linear-gradient(white, white);
+  -webkit-mask-clip: padding-box, border-box;
+  -webkit-mask-composite: source-in;
+}
+
+[data-glow]::before {
+  background-image: radial-gradient(calc(var(--spotlight-size) * 0.75) calc(var(--spotlight-size) * 0.75) at calc(var(--x, 0) * 1px) calc(var(--y, 0) * 1px),
+      hsl(var(--hue, 210) calc(var(--saturation, 100) * 1%) calc(var(--lightness, 50) * 1%) / var(--border-spot-opacity, 1)), transparent 100%);
+  filter: brightness(2);
+  transition: --border-spot-opacity 0.3s ease;
+}
+
+[data-glow]::after {
+  background-image: radial-gradient(calc(var(--spotlight-size) * 0.5) calc(var(--spotlight-size) * 0.5) at calc(var(--x, 0) * 1px) calc(var(--y, 0) * 1px),
+      hsl(0 100% 100% / var(--border-light-opacity, 1)), transparent 100%);
+  transition: --border-light-opacity 0.3s ease;
+}
+
+[data-glow] [data-glow] {
+  position: absolute;
+  inset: 0;
+  will-change: filter;
+  opacity: var(--outer, 1);
+  border-radius: calc(var(--radius) * 1px);
+  border-width: calc(var(--border-size) * 20);
+  filter: blur(calc(var(--border-size) * 10));
+  background: none;
+  pointer-events: none;
+  border: none;
+  transition: opacity 0.3s ease;
+}
+
+[data-glow]>[data-glow]::before {
+  inset: -10px;
+  border-width: 10px;
+}
+
+
+
 
 .trait-title {
   font-family: var(--font-heading);

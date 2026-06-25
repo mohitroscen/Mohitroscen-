@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
   // 0. Initial Page Loader Screen
   initLoader();
+  
+  // 0.5 Page Transitions
+  initPageTransitions();
 
   // 1. Theme Toggle System
   initTheme();
@@ -35,7 +38,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 11. Scroll Reveal
   initScrollReveal();
+
+  // 12. Glow Cards
+  initGlowCards();
+
+  // 13. Stats Animation
+  initStats();
+
+  // 14. Project Hover Image
+  initProjectHover();
+
+  // 15. Scroll Arrow (About Page)
+  initScrollArrow();
+
+  // 16. Project Details (Project Page)
+  initProjectDetails();
 });
+
+/**
+ * Initialize Glow Cards by syncing pointer coordinates to CSS variables
+ */
+function initGlowCards() {
+  const cards = document.querySelectorAll('.trait-card[data-glow]');
+  if (cards.length === 0) return;
+
+  const syncPointer = (e) => {
+    const x = e.clientX;
+    const y = e.clientY;
+
+    cards.forEach((card) => {
+      card.style.setProperty('--x', x.toFixed(2));
+      card.style.setProperty('--xp', (x / window.innerWidth).toFixed(2));
+      card.style.setProperty('--y', y.toFixed(2));
+      card.style.setProperty('--yp', (y / window.innerHeight).toFixed(2));
+    });
+  };
+
+  document.addEventListener('pointermove', syncPointer);
+}
+
+
 
 /**
  * Initialize theme based on local storage or user preference.
@@ -160,6 +202,19 @@ function initProjectFilters() {
 function initContactForm() {
   const form = document.getElementById('contact-form');
   if (!form) return;
+
+  // Dynamically load dependencies if not present
+  if (typeof emailjs === 'undefined') {
+    const s1 = document.createElement('script');
+    s1.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
+    s1.onload = () => emailjs.init({ publicKey: "MIFwj3191Sv2I8mJx" });
+    document.head.appendChild(s1);
+  }
+  if (typeof confetti === 'undefined') {
+    const s2 = document.createElement('script');
+    s2.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js';
+    document.head.appendChild(s2);
+  }
 
   const formInputs = form.querySelectorAll('.form-control');
   const successBanner = document.getElementById('form-success');
@@ -324,11 +379,7 @@ function validateInput(input) {
  * Dynamically wraps nav-link text in spans for sliding animation (Option C)
  */
 function initNavLinks() {
-  const navLinks = document.querySelectorAll('.nav-link');
-  navLinks.forEach(link => {
-    const text = link.textContent.trim();
-    link.innerHTML = `<span class="nav-link-inner" data-text="${text}">${text}</span>`;
-  });
+  // Disabled: Nav links now use HTML structure with icons
 }
 
 /**
@@ -712,7 +763,13 @@ function initFactsFlip() {
  */
 function initLoader() {
   const loaderOverlay = document.getElementById('loader-overlay');
-  if (!loaderOverlay) return;
+  if (!loaderOverlay) {
+    // If there is no loader overlay, still trigger the CSS entrance animations
+    setTimeout(() => {
+      document.body.classList.add('loaded');
+    }, 50);
+    return;
+  }
 
   const isReload = (window.performance && window.performance.getEntriesByType && window.performance.getEntriesByType('navigation')[0] && window.performance.getEntriesByType('navigation')[0].type === 'reload') ||
                    (window.performance && window.performance.navigation && window.performance.navigation.type === 1);
@@ -762,6 +819,102 @@ function initLoader() {
       }, 40); // 40ms per tick (average fill time is ~2.67s)
     }, 800); // Initial entrance delay of 800ms (0.8s)
   }
+}
+
+/**
+ * Page Transitions
+ */
+function initPageTransitions() {
+  window.addEventListener('popstate', (e) => {
+    if (e.state && e.state.url) {
+      loadPage(e.state.url, false);
+    } else {
+      loadPage(window.location.href, false);
+    }
+  });
+  attachLinkListeners(document);
+}
+
+function attachLinkListeners(root) {
+  root.querySelectorAll('a').forEach(link => {
+    if (link.dataset.ajaxBound) return;
+    link.dataset.ajaxBound = "true";
+
+    link.addEventListener('click', e => {
+      const href = link.getAttribute('href');
+      const target = link.getAttribute('target');
+      
+      // Ignore external, anchors, mailto, etc.
+      if (!href || href.startsWith('#') || href.startsWith('mailto:') || target === '_blank') return;
+      if (link.hostname !== window.location.hostname) return;
+      
+      // Ignore same page clicks
+      if (href === window.location.pathname || href === window.location.pathname + window.location.search) return;
+
+      e.preventDefault();
+      loadPage(href, true);
+    });
+  });
+}
+
+async function loadPage(url, pushState = true) {
+  document.body.classList.remove('loaded');
+  
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Network error');
+    const html = await response.text();
+    
+    setTimeout(() => {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      
+      const container = document.querySelector('.container.fade-in-element');
+      const newContainer = doc.querySelector('.container.fade-in-element');
+      
+      if (newContainer && container) {
+        container.innerHTML = newContainer.innerHTML;
+        document.title = doc.title;
+        if (pushState) window.history.pushState({url}, '', url);
+        
+        // Preserve essential classes
+        const isLightMode = document.body.classList.contains('light-mode');
+        document.body.className = doc.body.className;
+        document.body.classList.remove('loaded');
+        document.body.classList.remove('loading'); // remove initial loader class
+        if (isLightMode) document.body.classList.add('light-mode');
+        
+        reinitScripts();
+        attachLinkListeners(container);
+        
+        setTimeout(() => {
+          document.body.classList.add('loaded');
+        }, 50);
+      } else {
+        window.location.href = url;
+      }
+    }, 450);
+  } catch(e) {
+    window.location.href = url;
+  }
+}
+
+function reinitScripts() {
+  if (typeof initTheme === 'function') initTheme();
+  if (typeof initPronunciation === 'function') initPronunciation();
+  if (typeof initProjectFilters === 'function') initProjectFilters();
+  if (typeof initContactForm === 'function') initContactForm();
+  if (typeof initNavLinks === 'function') initNavLinks();
+  if (typeof highlightActiveLink === 'function') highlightActiveLink();
+  if (typeof initTypingEffect === 'function') initTypingEffect();
+  if (typeof initMobileMenu === 'function') initMobileMenu();
+  if (typeof initFactsFlip === 'function') initFactsFlip();
+  if (typeof initScrollReveal === 'function') initScrollReveal();
+  if (typeof initGlowCards === 'function') initGlowCards();
+  if (typeof initStats === 'function') initStats();
+  if (typeof initProjectHover === 'function') initProjectHover();
+  if (typeof initScrollArrow === 'function') initScrollArrow();
+  if (typeof initProjectDetails === 'function') initProjectDetails();
 }
 
 /**
@@ -847,4 +1000,310 @@ function initScrollReveal() {
   });
 
   items.forEach(el => observer.observe(el));
+}
+
+/**
+ * Initialize Stats Bar
+ */
+function initStats() {
+  function animCount(id, target, duration, pad) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const start = performance.now();
+    function tick(now) {
+      const p = Math.min((now - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - p, 3);
+      const val = Math.round(ease * target);
+      el.textContent = pad ? String(val).padStart(2, '0') : val;
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  
+  if (document.getElementById('c1')) {
+    setTimeout(() => {
+      animCount('c1', 2, 1000, false);
+      animCount('c2', 10, 1200, true);
+      animCount('c3', 15, 1400, true);
+    }, 100);
+  }
+}
+
+/**
+ * Initialize Project Hover Image Previews
+ */
+function initProjectHover() {
+  const previews = [
+    { label: "AI Farming Drone", bg: "url('assets/img/project1.jpg') center/cover" },
+    { label: "AI Traffic Light System", bg: "url('assets/img/project2.jpg') center/cover" },
+    { label: "ICU-Alert System", bg: "url('assets/img/project3.jpg') center/cover" },
+    { label: "AI Weather Prediction", bg: "url('assets/img/project4.jpeg') center/cover" },
+    { label: "AI Medic Chatbot", bg: "url('assets/img/project5.jpg') center/cover" },
+    { label: "Multipurpose Rover", bg: "url('assets/img/project6.jpg') center/cover" },
+  ];
+
+  const preview = document.getElementById('preview');
+  const previewInner = document.getElementById('preview-inner');
+  if (!preview || !previewInner) return;
+
+  previews.forEach(p => {
+    const img = new Image();
+    const match = p.bg.match(/url\('(.*?)'\)/);
+    if (match && match[1]) {
+      img.src = match[1];
+    }
+  });
+
+  document.querySelectorAll('.folder-item').forEach(item => {
+    // Remove existing listeners by cloning and replacing to prevent duplicates if reinit is called
+    const clone = item.cloneNode(true);
+    if (item.parentNode) {
+      item.parentNode.replaceChild(clone, item);
+    }
+    
+    const projectIndex = clone.dataset.project;
+    if (projectIndex && previews[parseInt(projectIndex)]) {
+      const p = previews[parseInt(projectIndex)];
+      clone.addEventListener('mouseenter', () => {
+        previewInner.style.background = p.bg;
+        preview.classList.add('visible');
+      });
+      clone.addEventListener('mouseleave', () => preview.classList.remove('visible'));
+    }
+  });
+
+  // Remove previous mousemove to prevent duplicates
+  if (window._projectHoverMove) {
+    document.removeEventListener('mousemove', window._projectHoverMove);
+  }
+  
+  window._projectHoverMove = function(e) {
+    if (!preview.classList.contains('visible')) return;
+    const padding = 15;
+    const halfWidth = 130;
+    const topOffset = 99;
+    const bottomOffset = 66;
+
+    const x = Math.max(halfWidth + padding, Math.min(e.clientX, window.innerWidth - halfWidth - padding));
+    const y = Math.max(topOffset + padding, Math.min(e.clientY, window.innerHeight - bottomOffset - padding));
+
+    preview.style.left = x + 'px';
+    preview.style.top = y + 'px';
+  };
+  
+  document.addEventListener('mousemove', window._projectHoverMove);
+}
+
+/**
+ * Initialize Scroll Arrow
+ */
+function initScrollArrow() {
+  const wrap = document.querySelector('.scroll-arrow-wrap');
+  const arrow = document.getElementById('scrollArrow');
+  if (!wrap || !arrow) return;
+
+  const BASE_BOTTOM = 36;  // px — normal resting position
+  const RING_RADIUS = 20;  // small clearance so rings don't clip footer
+  const FOOTER_GAP = 8;   // tight breathing room above footer
+  const THRESHOLD = 120;
+
+  function isNearBottom() {
+    return window.innerHeight + window.scrollY >= document.body.scrollHeight - THRESHOLD;
+  }
+
+  function updateArrow() {
+    if (isNearBottom()) {
+      arrow.classList.add('is-up');
+      arrow.setAttribute('aria-label', 'Back to top');
+    } else {
+      arrow.classList.remove('is-up');
+      arrow.setAttribute('aria-label', 'Scroll down');
+    }
+
+    // Lift the whole wrap (arrow + rings) above the footer
+    const footer = document.querySelector('.bottom-connect-bar, footer');
+    if (footer) {
+      const footerRect = footer.getBoundingClientRect();
+      const distFromBottom = window.innerHeight - footerRect.top;
+      const needed = distFromBottom + RING_RADIUS + FOOTER_GAP;
+      const newBottom = Math.max(BASE_BOTTOM, needed);
+      wrap.style.bottom = newBottom + 'px';
+    } else {
+      wrap.style.bottom = BASE_BOTTOM + 'px';
+    }
+  }
+
+  // Remove existing listeners to avoid duplicates on reinit
+  if (window._scrollArrowClick) arrow.removeEventListener('click', window._scrollArrowClick);
+  if (window._scrollArrowUpdate) {
+    window.removeEventListener('scroll', window._scrollArrowUpdate);
+    window.removeEventListener('resize', window._scrollArrowUpdate);
+  }
+
+  window._scrollArrowClick = function () {
+    if (isNearBottom()) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      window.scrollBy({ top: window.innerHeight * 0.85, behavior: 'smooth' });
+    }
+  };
+
+  window._scrollArrowUpdate = updateArrow;
+
+  arrow.addEventListener('click', window._scrollArrowClick);
+  window.addEventListener('scroll', window._scrollArrowUpdate, { passive: true });
+  window.addEventListener('resize', window._scrollArrowUpdate, { passive: true });
+  updateArrow();
+}
+
+/**
+ * Initialize Project Details (for project.html)
+ */
+function initProjectDetails() {
+  const projTitleEl = document.getElementById('proj-title');
+  if (!projTitleEl) return;
+
+  const projectData = [
+    {
+      title: "AI Farming Drone",
+      tag: "AI/ML",
+      image: "assets/img/project1.jpg",
+      image2: "assets/img/drone.JPEG",
+      github: "https://github.com/mohitroscen/Ai-farming-drone-for-disease-detection-.git",
+      desc: `<p>The system integrates a high-performance software pipeline tailored for edge-computing hardware, enabling the quadcopter to process high-resolution aerial feeds locally without relying on cloud connectivity. Equipped with a high-efficiency multi-spectral camera, the drone captures detailed structural data to run real-time anomaly checks. The onboard vision model instantly flags localized plant pathologies, tracks overall crop health metrics, and registers precise GPS coordinates to generate an actionable stress map for automated field diagnostics.</p>
+<h3>Tech Stack</h3>
+<ul>
+<li><strong>TensorFlow & PyTorch:</strong> Powers the core Convolutional Neural Network (CNN) for fine-grained, multi-class plant disease classification.</li>
+<li><strong>OpenCV:</strong> Handles real-time video stream ingestion, frame stabilization, and dynamic HSV color-space masking to isolate foliage.</li>
+<li><strong>Embedded Deployment:</strong> Optimized for low-power, high-FPS inference on onboard edge hardware.</li>
+<li><strong>Flight Integration:</strong> Synchronizes high-efficiency camera feeds with telemetry data for precise, geotagged crop monitoring.</li>
+</ul>`
+    },
+    {
+      title: "AI Traffic Light System",
+      tag: "AI",
+      image: "assets/img/project2.jpg",
+      image2: "assets/img/traffic.jpg",
+      github: "https://github.com/mohitroscen/Samrt-Traffic-Light-Mangment-Sytem-.git",
+      desc: `<p>An intelligent traffic control solution designed to mitigate urban congestion by replacing static timers with dynamic, real-time adjustments. Utilizing a high-efficiency camera network, the system monitors intersections to analyze vehicle density across all lanes simultaneously. By calculating live vehicle counts, the core algorithm dynamically adjusts traffic light durations—extending green lights for heavily congested roads while reducing wait times for empty lanes—optimizing overall intersection throughput and reducing idle vehicle emissions.</p>
+<h3>Tech Stack</h3>
+<ul>
+<li><strong>YOLOv5 & TensorFlow:</strong> Real-time vehicle detection, tracking, and density estimation.</li>
+<li><strong>OpenCV:</strong> Multi-camera stream ingestion, frame preprocessing, and ROI masking.</li>
+<li><strong>Smart Controller Logic:</strong> Adaptive algorithmic processing for dynamic signal switching.</li>
+</ul>`
+    },
+    {
+      title: "ICU-Alert System",
+      tag: "IOT",
+      image: "assets/img/project3.jpg",
+      image2: "assets/img/icu-alert.JPEG",
+      github: "https://github.com/mohitroscen",
+      desc: `<p>An automated, high-precision clinical monitoring system developed to enhance patient safety in intensive care units through instant distress broadcasting. The system continuously tracks critical physiological biometrics, such as heart rate fluctuations, and automatically triggers an immediate response if readings cross safe thresholds. When an anomaly is detected, it instantly broadcasts real-time alert notifications directly to the attending doctor's device while simultaneously activating a physical buzzer alarm at the central nursing station, ensuring rapid, multi-tiered medical intervention.</p>
+<h3>Tech Stack</h3>
+<ul>
+<li><strong>IoT Hardware & Sensors:</strong> Real-time physiological biometric data acquisition and hardware-level triggers.</li>
+<li><strong>Full-Stack Application:</strong> Built for centralized, low-latency monitoring and complete alert history logging.</li>
+<li><strong>Notification Architecture:</strong> Automated routing for immediate mobile alerts and localized ward alarms.</li>
+</ul>`
+    },
+    {
+      title: "AI Weather Prediction",
+      tag: "AI",
+      image: "assets/img/project4.jpeg",
+      image2: "assets/img/ai-weather.jpg",
+      github: "https://github.com/mohitroscen",
+      liveUrl: "https://ai-weather-intelligence-g9tuzwtz7ue4kvplgatane.streamlit.app/",
+      desc: `<p>A high-accuracy meteorological forecasting platform designed to deliver hyper-local weather insights. Moving away from broad regional estimates, the system pulls live conditions via the Google Weather API to analyze complex atmospheric variables for a specific, user-selected location. The application processes these inputs through a deep learning model to project upcoming conditions, organizing the results into a clean, intuitive predictive data table and generating dynamic visual graphs to help users track shifting atmospheric trends at a glance.</p>
+<h3>Tech Stack</h3>
+<ul>
+<li><strong>Keras & Pandas:</strong> Advanced data manipulation and deep learning regression for precise, hyper-local forecasting.</li>
+<li><strong>Google Weather API:</strong> Live, location-based meteorological data ingestion.</li>
+<li><strong>Streamlit:</strong> Interactive web dashboard for rendering real-time prediction tables and dynamic graphs.</li>
+</ul>`
+    },
+    {
+      title: "AI Medic Chatbot",
+      tag: "Website Design",
+      image: "assets/img/project5.jpg",
+      image2: "",
+      github: "",
+      desc: `<p>An intelligent healthcare assistant application designed to streamline patient care, scheduling, and daily medical routines. The platform features an advanced AI-powered chat interface that interacts with users to assess symptoms, answer medical queries, and provide preliminary guidance. Beyond virtual assistance, the application bridges the gap between digital and physical care by enabling seamless doctor appointment scheduling and incorporating an automated tablet reminder system to ensure strict patient medication compliance.</p>
+<h3>Tech Stack</h3>
+<ul>
+<li><strong>Flutter & Dart:</strong> Cross-platform mobile development for a smooth, high-performance user experience.</li>
+<li><strong>Generative AI / LLM API:</strong> Powers the conversational medical assistant for smart, real-time user guidance.</li>
+<li><strong>Local Notifications & Database:</strong> Manages offline tablet reminders, scheduling storage, and user alerts.</li>
+</ul>`
+    },
+    {
+      title: "Multipurpose Rover",
+      tag: "Branding",
+      image: "assets/img/project6.jpg",
+      image2: "",
+      github: "",
+      desc: `<p>A versatile, custom-built robotic rover designed as a playground for hardware-software integration and experimental automation. Built purely for exploration and hands-on fun, the rover features a modular chassis capable of adapting to diverse environments and tasks. Equipped with a remote control interface and real-time sensor feedback, this multi-purpose vehicle serves as a flexible testing bed for custom navigation algorithms, obstacle avoidance routines, and interactive hardware add-ons.</p>
+<h3>Tech Stack</h3>
+<ul>
+<li><strong>Embedded C++ & Microcontrollers:</strong> Low-level firmware architecture for motor control, sensor interfacing, and hardware logic.</li>
+<li><strong>IoT Wireless Communication:</strong> Seamless Wi-Fi or Bluetooth protocols for real-time telemetry and wireless steering control.</li>
+<li><strong>Sensor Integration:</strong> Interfaced ultrasonic sensors, motor drivers, and power management modules for autonomous traversal.</li>
+</ul>`
+    }
+  ];
+
+  const urlParams = new URLSearchParams(window.location.search);
+  let projectId = parseInt(urlParams.get('id'));
+
+  if (isNaN(projectId) || projectId < 0 || projectId >= projectData.length) {
+    projectId = 0;
+  }
+
+  const data = projectData[projectId];
+
+  projTitleEl.textContent = data.title;
+  const descContent = data.desc.trim().startsWith('<') ? data.desc : `<p>${data.desc}</p>`;
+  document.getElementById('proj-desc').innerHTML = descContent;
+  
+  const projImage1 = document.getElementById('proj-image');
+  if (projImage1) {
+    projImage1.src = data.image;
+    projImage1.alt = data.title;
+  }
+  
+  const projImage2 = document.getElementById('proj-image-2');
+  const projImage2Container = document.getElementById('proj-image-2-container');
+  if (data.image2 && projImage2 && projImage2Container) {
+    projImage2.src = data.image2;
+    projImage2.alt = data.title;
+    projImage2Container.style.display = 'block';
+  } else if (projImage2Container) {
+    projImage2Container.style.display = 'none';
+  }
+  
+  const githubLink = document.getElementById('github-link');
+  if (githubLink) {
+    if (data.github) {
+      githubLink.href = data.github;
+      githubLink.style.display = 'inline-flex';
+    } else {
+      githubLink.style.display = 'none';
+    }
+  }
+  
+  const liveLink = document.getElementById('live-link');
+  if (liveLink) {
+    if (data.liveUrl) {
+      liveLink.href = data.liveUrl;
+      liveLink.style.display = 'inline-flex';
+    } else {
+      liveLink.style.display = 'none';
+    }
+  }
+  
+  const pageTitle = document.getElementById('page-title');
+  if (pageTitle) pageTitle.textContent = `${data.title} | Projects`;
+  
+  const metaDesc = document.getElementById('meta-description');
+  if (metaDesc) metaDesc.setAttribute('content', `Learn more about Mohit Roscen's project: ${data.title}.`);
 }
