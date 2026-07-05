@@ -26,9 +26,38 @@
   <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
   <link rel="manifest" href="assets/favicon/site.webmanifest">
   <link rel="shortcut icon" href="assets/favicon/favicon.ico">
+  <script>
+    (function () {
+      const isReload = (window.performance && window.performance.getEntriesByType && window.performance.getEntriesByType('navigation')[0] && window.performance.getEntriesByType('navigation')[0].type === 'reload') ||
+        (window.performance && window.performance.navigation && window.performance.navigation.type === 1);
+      if (sessionStorage.getItem('portfolio-loaded') && !isReload) {
+        document.documentElement.classList.add('skip-loader');
+      }
+    })();
+  </script>
 </head>
 
-<body>
+<body class="loading page-projects">
+  <!-- Loader Overlay -->
+  <div id="loader-overlay" class="loader-overlay">
+    <div class="loader-container">
+      <div class="loader-avatar-wrap">
+        <div class="loader-avatar-inner">
+          <video src="assets/img/1781456302945569.mp4" autoplay loop muted playsinline></video>
+        </div>
+      </div>
+      <div class="loader-name">FLX</div>
+      <div class="loader-bar-section">
+        <div class="loader-bar-track">
+          <div class="loader-bar-fill" id="bar-fill"></div>
+        </div>
+        <div class="loader-bar-labels">
+          <span class="loader-bar-msg" id="bar-msg">Initializing...</span>
+          <span class="loader-bar-pct" id="bar-pct">0%</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Grain Overlay for visual texture -->
   <div class="grain-overlay"></div>

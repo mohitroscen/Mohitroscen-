@@ -914,6 +914,7 @@ function reinitScripts() {
   if (typeof initStats === 'function') initStats();
   if (typeof initProjectHover === 'function') initProjectHover();
   if (typeof initScrollArrow === 'function') initScrollArrow();
+
   if (typeof initProjectDetails === 'function') initProjectDetails();
 }
 
@@ -1097,19 +1098,25 @@ function initProjectHover() {
 /**
  * Initialize Scroll Arrow
  */
+
+
+/**
+ * Initialize Scroll Arrow
+ */
 function initScrollArrow() {
   const wrap = document.querySelector('.scroll-arrow-wrap');
   const arrow = document.getElementById('scrollArrow');
   if (!wrap || !arrow) return;
 
-  const BASE_BOTTOM = 36;  // px — normal resting position
-  const RING_RADIUS = 20;  // small clearance so rings don't clip footer
-  const FOOTER_GAP = 8;   // tight breathing room above footer
   const THRESHOLD = 120;
 
   function isNearBottom() {
     return window.innerHeight + window.scrollY >= document.body.scrollHeight - THRESHOLD;
   }
+
+  const BASE_BOTTOM = 36;  // px — normal resting position
+  const RING_RADIUS = 20;  // small clearance so rings don't clip footer
+  const FOOTER_GAP = 8;   // tight breathing room above footer
 
   function updateArrow() {
     if (isNearBottom()) {
@@ -1128,8 +1135,12 @@ function initScrollArrow() {
       const needed = distFromBottom + RING_RADIUS + FOOTER_GAP;
       const newBottom = Math.max(BASE_BOTTOM, needed);
       wrap.style.bottom = newBottom + 'px';
+      wrap.style.opacity = '1';
+      wrap.style.pointerEvents = 'auto';
     } else {
       wrap.style.bottom = BASE_BOTTOM + 'px';
+      wrap.style.opacity = '1';
+      wrap.style.pointerEvents = 'auto';
     }
   }
 
