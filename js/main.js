@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // 0. Initial Page Loader Screen
   initLoader();
   
+  // 0.2 Smooth Scroll Engine (Lenis)
+  initLenis();
+
   // 0.5 Page Transitions
   initPageTransitions();
 
@@ -11,15 +14,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // 2. Audio Pronunciation
   initPronunciation();
 
-  // 3. Project Filter System (For projects.html)
-  initProjectFilters();
-
   // 4. Contact Form Handler (For contact.html)
   initContactForm();
 
-  // 5. Active Link Indicator
+  // 5. Active Link Indicator, Smooth Scroll & Visual Reading Indicator
   initNavLinks();
-  highlightActiveLink();
+  initSmoothScroll();
+  initScrollSpy();
+  initScrollProgress();
 
   // 6. Canvas Waves Background
   initWaves();
@@ -38,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 11. Scroll Reveal
   initScrollReveal();
+  initGalleryReveal();
 
   // 12. Glow Cards
   initGlowCards();
@@ -45,14 +48,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // 13. Stats Animation
   initStats();
 
-  // 14. Project Hover Image
-  initProjectHover();
-
   // 15. Scroll Arrow (About Page)
   initScrollArrow();
 
-  // 16. Project Details (Project Page)
-  initProjectDetails();
+  // 17. Interactive About Me Cursor Reveal
+  initAboutReveal();
 });
 
 /**
@@ -160,41 +160,7 @@ function initPronunciation() {
   });
 }
 
-/**
- * Filter project items on projects.html
- */
-function initProjectFilters() {
-  const filterButtons = document.querySelectorAll('.filter-btn');
-  const projectCards = document.querySelectorAll('.project-card');
-  if (filterButtons.length === 0 || projectCards.length === 0) return;
 
-  filterButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      // Toggle active states on buttons
-      filterButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      const filterValue = btn.getAttribute('data-filter');
-
-      // Hide or show cards
-      projectCards.forEach(card => {
-        const categories = card.getAttribute('data-categories').split(' ');
-
-        if (filterValue === 'all' || categories.includes(filterValue)) {
-          card.style.display = 'flex';
-          // Smooth fade back in
-          card.style.opacity = '0';
-          setTimeout(() => {
-            card.style.transition = 'opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
-            card.style.opacity = '1';
-          }, 50);
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    });
-  });
-}
 
 /**
  * Handle form inputs, floating labels, validation, and submission
@@ -383,20 +349,236 @@ function initNavLinks() {
 }
 
 /**
- * Highlights active page link in navigation menu
+ * 0.2 Initialize Lenis Smooth Scroll Engine (Seamless bidirectional scrolling)
+ */
+let lenisInstance = null;
+let lenisRafId = null;
+
+function initLenis() {
+  if (typeof Lenis === 'undefined') return null;
+
+  if (window.lenis && typeof window.lenis.destroy === 'function') {
+    window.lenis.destroy();
+  }
+  if (lenisRafId) {
+    cancelAnimationFrame(lenisRafId);
+    lenisRafId = null;
+  }
+
+  const lenis = new Lenis({
+    lerp: 0.052,          // Slow-motion, liquid cinematic drift & damping
+    wheelMultiplier: 1.22, // High-speed momentum on fast scrolls
+    touchMultiplier: 2.0,  // Fast responsive touch glide
+    smoothWheel: true,
+    smoothTouch: true,
+    syncTouch: false,
+    autoResize: true,
+  });
+
+  window.lenis = lenis;
+  lenisInstance = lenis;
+
+  function raf(time) {
+    lenis.raf(time);
+    lenisRafId = requestAnimationFrame(raf);
+  }
+  lenisRafId = requestAnimationFrame(raf);
+  return lenis;
+}
+
+/**
+ * Smooth scroll navigation for anchor links and mobile menu auto-close
+ */
+function initSmoothScroll() {
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    if (anchor.dataset.scrollBound) return;
+    anchor.dataset.scrollBound = "true";
+
+    anchor.addEventListener('click', function (e) {
+      const targetId = this.getAttribute('href');
+      if (!targetId || targetId === '#') return;
+      const targetEl = document.querySelector(targetId);
+      if (targetEl) {
+        e.preventDefault();
+
+        // Close sidebar drawer if open
+        const menuToggle = document.getElementById('menu-toggle');
+        if (document.body.classList.contains('drawer-open')) {
+          document.body.classList.remove('drawer-open');
+          if (menuToggle) menuToggle.classList.remove('open');
+        }
+
+        if (window.lenis) {
+          window.lenis.scrollTo(targetEl, { offset: -80, duration: 1.4 });
+        } else {
+          targetEl.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        if (history.pushState) {
+          history.pushState(null, null, targetId);
+        } else {
+          location.hash = targetId;
+        }
+      }
+    });
+  });
+}
+
+/**
+ * Automatically updates active state for desktop nav links and drawer menu links
+ * based on scroll position (index.html sections) and current page route.
+ */
+function initScrollSpy() {
+  const desktopLinks = document.querySelectorAll('.desktop-nav-links .desktop-nav-link');
+  const drawerLinks = document.querySelectorAll('.drawer-menu-link');
+  const sections = document.querySelectorAll('section[id], footer[id="contact"]');
+
+  function determineActiveSection() {
+    const path = window.location.pathname.toLowerCase();
+    const hash = window.location.hash.toLowerCase();
+
+    // Check if on dedicated pages
+    if (path.includes('about')) return 'about';
+    if (path.includes('contact')) return 'contact';
+    if (path.includes('project')) return 'projects';
+
+    // If on single-page scroll view (index.html or root /)
+    if (sections.length > 0) {
+      const scrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+      const windowHeight = window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight;
+
+      // Bottom of page -> contact
+      if (scrollY + windowHeight >= docHeight - 100) {
+        return 'contact';
+      }
+
+      // Check section bounding rects relative to viewport trigger line (35% from top)
+      let activeId = '';
+      const triggerY = windowHeight * 0.35;
+
+      sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= triggerY && rect.bottom >= triggerY) {
+          activeId = section.getAttribute('id');
+        }
+      });
+
+      if (activeId) return activeId;
+      if (hash) return hash.replace('#', '');
+
+      // Top of page (< 200px) -> home
+      if (scrollY < 200) {
+        return 'home';
+      }
+    }
+
+    return 'home';
+  }
+
+  function updateActiveNav() {
+    const activeSection = determineActiveSection();
+
+    // Update Desktop Nav Links
+    desktopLinks.forEach(link => {
+      const href = (link.getAttribute('href') || '').toLowerCase();
+      const text = (link.textContent || '').trim().toLowerCase();
+
+      let isActive = false;
+      if (activeSection === 'about' && (href.includes('about') || text === 'about')) {
+        isActive = true;
+      } else if ((activeSection === 'projects' || activeSection === 'work') && (href.includes('project') || href.includes('work') || text === 'work')) {
+        isActive = true;
+      } else if (activeSection === 'contact' && (href.includes('contact') || text === 'contact')) {
+        isActive = true;
+      }
+
+      link.classList.toggle('active', isActive);
+    });
+
+    // Update Drawer Menu Links
+    drawerLinks.forEach(link => {
+      const href = (link.getAttribute('href') || '').toLowerCase();
+      const text = (link.textContent || '').trim().toLowerCase();
+
+      let isActive = false;
+      if (activeSection === 'home' && (href.includes('home') || text.includes('home'))) {
+        isActive = true;
+      } else if (activeSection === 'about' && (href.includes('about') || text.includes('about') || text.includes('experience'))) {
+        isActive = true;
+      } else if ((activeSection === 'projects' || activeSection === 'work') && (href.includes('project') || href.includes('work') || text.includes('work') || text.includes('project'))) {
+        isActive = true;
+      } else if (activeSection === 'contact' && (href.includes('contact') || text.includes('contact'))) {
+        isActive = true;
+      }
+
+      link.classList.toggle('active', isActive);
+    });
+  }
+
+  let ticking = false;
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        updateActiveNav();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+
+  if (window._scrollSpyHandler) {
+    window.removeEventListener('scroll', window._scrollSpyHandler);
+  }
+  window._scrollSpyHandler = onScroll;
+
+  if (window.lenis) {
+    window.lenis.on('scroll', onScroll);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', updateActiveNav, { passive: true });
+  window.addEventListener('hashchange', updateActiveNav);
+
+  updateActiveNav();
+}
+
+/**
+ * Highlights active page link in navigation menu (legacy fallback)
  */
 function highlightActiveLink() {
-  const navLinks = document.querySelectorAll('.nav-link');
-  const currentPath = window.location.pathname;
+  initScrollSpy();
+}
 
-  navLinks.forEach(link => {
-    const href = link.getAttribute('href');
-    if (currentPath.endsWith(href) || (currentPath === '/' && href === 'index.html')) {
-      link.classList.add('active');
-    } else {
-      link.classList.remove('active');
-    }
-  });
+/**
+ * Visual Reading Indicator: Real-time track of scroll progress (fills down on scrolling)
+ */
+function initScrollProgress() {
+  const thumb = document.getElementById('scrollProgressThumb');
+  if (!thumb) return;
+
+  function updateProgress() {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? Math.min(1, Math.max(0, scrollTop / docHeight)) : 0;
+
+    // Line fills down from top as you scroll (minimum 5% visible at top)
+    const pct = Math.max(5, Math.min(100, Math.round(progress * 100)));
+    thumb.style.height = `${pct}%`;
+  }
+
+  updateProgress();
+
+  if (window._scrollProgressUpdate) {
+    window.removeEventListener('scroll', window._scrollProgressUpdate);
+    window.removeEventListener('resize', window._scrollProgressUpdate);
+  }
+  window._scrollProgressUpdate = updateProgress;
+
+  if (window.lenis) {
+    window.lenis.on('scroll', updateProgress);
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  window.addEventListener('resize', updateProgress);
 }
 
 /**
@@ -676,50 +858,73 @@ function initTypingEffect() {
 }
 
 /**
- * Initialize Mobile Navigation Menu Toggle
+ * Initialize Multi-Column Sidebar Navigation Drawer
  */
 function initMobileMenu() {
   const menuToggle = document.getElementById('menu-toggle');
-  const navMenu = document.querySelector('header nav');
-  if (!menuToggle || !navMenu) return;
+  const sidebarDrawer = document.getElementById('sidebarDrawer');
+  const sidebarOverlay = document.getElementById('sidebarOverlay');
+  const drawerCloseBtn = document.getElementById('drawerCloseBtn');
 
-  function openMenu() {
-    navMenu.classList.add('open');
-    menuToggle.classList.add('open');
-    document.body.classList.add('menu-open');
+  function openDrawer() {
+    document.body.classList.add('drawer-open');
+    if (menuToggle) menuToggle.classList.add('open');
   }
 
-  function closeMenu() {
-    navMenu.classList.remove('open');
-    menuToggle.classList.remove('open');
-    document.body.classList.remove('menu-open');
+  function closeDrawer() {
+    document.body.classList.remove('drawer-open');
+    if (menuToggle) menuToggle.classList.remove('open');
   }
 
-  // Hamburger toggle button
-  menuToggle.addEventListener('click', (e) => {
-    e.stopPropagation();
-    if (menuToggle.classList.contains('open')) {
-      closeMenu();
-    } else {
-      openMenu();
-    }
-  });
+  // 2-line toggle button click
+  if (menuToggle) {
+    menuToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (document.body.classList.contains('drawer-open')) {
+        closeDrawer();
+      } else {
+        openDrawer();
+      }
+    });
+  }
 
-  // Close when clicking outside the nav panel
+  // Close button inside drawer
+  if (drawerCloseBtn) {
+    drawerCloseBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeDrawer();
+    });
+  }
+
+  // Close when clicking the dark backdrop overlay
+  if (sidebarOverlay) {
+    sidebarOverlay.addEventListener('click', closeDrawer);
+  }
+
+  // Close when clicking outside the drawer
   document.addEventListener('click', (e) => {
-    if (menuToggle.classList.contains('open')) {
-      if (!navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
-        closeMenu();
+    if (document.body.classList.contains('drawer-open')) {
+      if (sidebarDrawer && !sidebarDrawer.contains(e.target) && menuToggle && !menuToggle.contains(e.target)) {
+        closeDrawer();
       }
     }
   });
 
-  // Close menu on window resize if switching to desktop layout
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 768) {
-      closeMenu();
+  // Close on Escape key press
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && document.body.classList.contains('drawer-open')) {
+      closeDrawer();
     }
   });
+
+  // Close when clicking any link inside the drawer
+  if (sidebarDrawer) {
+    sidebarDrawer.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        closeDrawer();
+      });
+    });
+  }
 }
 
 /**
@@ -876,6 +1081,14 @@ async function loadPage(url, pushState = true) {
         container.innerHTML = newContainer.innerHTML;
         document.title = doc.title;
         if (pushState) window.history.pushState({url}, '', url);
+
+        // Re-execute inline script elements in swapped container
+        container.querySelectorAll('script').forEach(oldScript => {
+          const newScript = document.createElement('script');
+          Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+          newScript.textContent = oldScript.textContent;
+          oldScript.parentNode.replaceChild(newScript, oldScript);
+        });
         
         // Preserve essential classes
         const isLightMode = document.body.classList.contains('light-mode');
@@ -884,8 +1097,34 @@ async function loadPage(url, pushState = true) {
         document.body.classList.remove('loading'); // remove initial loader class
         if (isLightMode) document.body.classList.add('light-mode');
         
-        reinitScripts();
+        reinitScripts(url);
         attachLinkListeners(container);
+        
+        // Handle scroll position (to hash element or top of page)
+        const hash = url.includes('#') ? url.substring(url.indexOf('#')) : '';
+        if (hash) {
+          const scrollToHash = () => {
+            const targetEl = document.querySelector(hash);
+            if (targetEl) {
+              if (window.lenis) {
+                window.lenis.resize();
+                window.lenis.scrollTo(targetEl, { offset: -30, immediate: true });
+              } else {
+                targetEl.scrollIntoView();
+              }
+            }
+          };
+          scrollToHash();
+          setTimeout(scrollToHash, 60);
+          setTimeout(scrollToHash, 250);
+        } else {
+          if (window.lenis) {
+            window.lenis.resize();
+            window.lenis.scrollTo(0, { immediate: true });
+          } else {
+            window.scrollTo(0, 0);
+          }
+        }
         
         setTimeout(() => {
           document.body.classList.add('loaded');
@@ -899,12 +1138,15 @@ async function loadPage(url, pushState = true) {
   }
 }
 
-function reinitScripts() {
+function reinitScripts(targetUrl) {
+  if (typeof initLenis === 'function') initLenis();
+  if (typeof initWaves === 'function') initWaves();
   if (typeof initTheme === 'function') initTheme();
   if (typeof initPronunciation === 'function') initPronunciation();
-  if (typeof initProjectFilters === 'function') initProjectFilters();
   if (typeof initContactForm === 'function') initContactForm();
   if (typeof initNavLinks === 'function') initNavLinks();
+  if (typeof initSmoothScroll === 'function') initSmoothScroll();
+  if (typeof initScrollSpy === 'function') initScrollSpy();
   if (typeof highlightActiveLink === 'function') highlightActiveLink();
   if (typeof initTypingEffect === 'function') initTypingEffect();
   if (typeof initMobileMenu === 'function') initMobileMenu();
@@ -912,10 +1154,87 @@ function reinitScripts() {
   if (typeof initScrollReveal === 'function') initScrollReveal();
   if (typeof initGlowCards === 'function') initGlowCards();
   if (typeof initStats === 'function') initStats();
-  if (typeof initProjectHover === 'function') initProjectHover();
   if (typeof initScrollArrow === 'function') initScrollArrow();
+  if (typeof initScrollProgress === 'function') initScrollProgress();
 
-  if (typeof initProjectDetails === 'function') initProjectDetails();
+  if (typeof initAboutReveal === 'function') initAboutReveal();
+  if (typeof window.initProjDeck === 'function') window.initProjDeck();
+  if (typeof window.initProjectDetail === 'function') window.initProjectDetail(targetUrl);
+}
+
+/**
+ * Interactive About Me Cursor Reveal Spotlight
+ */
+function initAboutReveal() {
+  const stageElements = [
+    {
+      stage: document.getElementById('aboutRevealStage'),
+      textWrap: document.getElementById('aboutRevealTextWrap')
+    },
+    {
+      stage: document.getElementById('mottoRevealStage'),
+      textWrap: document.getElementById('mottoRevealTextWrap')
+    }
+  ];
+
+  if (window._aboutRevealRafs) {
+    window._aboutRevealRafs.forEach(raf => cancelAnimationFrame(raf));
+  }
+  window._aboutRevealRafs = [];
+
+  stageElements.forEach(item => {
+    const stage = item.stage;
+    const textWrap = item.textWrap;
+    if (!stage || !textWrap) return;
+
+    const cursorCircle = textWrap.querySelector('.cursor-circle');
+    const RADIUS = 140;
+    let mouseX = null;
+    let mouseY = null;
+    let targetR = 0;
+    let currentR = 0;
+
+    stage.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      const rect = textWrap.getBoundingClientRect();
+      const ox = mouseX - rect.left;
+      const oy = mouseY - rect.top;
+      textWrap.style.setProperty('--ox', ox + 'px');
+      textWrap.style.setProperty('--oy', oy + 'px');
+    });
+
+    stage.addEventListener('mouseenter', () => { targetR = RADIUS; });
+    stage.addEventListener('mouseleave', () => { targetR = 0; });
+
+    function tick() {
+      currentR += (targetR - currentR) * 0.22;
+      if (Math.abs(targetR - currentR) < 0.2) currentR = targetR;
+
+      if (mouseX !== null && textWrap) {
+        const rect = textWrap.getBoundingClientRect();
+        const ox = mouseX - rect.left;
+        const oy = mouseY - rect.top;
+        textWrap.style.setProperty('--ox', ox + 'px');
+        textWrap.style.setProperty('--oy', oy + 'px');
+      }
+      if (textWrap) {
+        textWrap.style.setProperty('--r', currentR + 'px');
+      }
+      if (cursorCircle) {
+        cursorCircle.style.transform = `translate(-50%, -50%) scale(${currentR / RADIUS})`;
+      }
+
+      // Instead of array for cancelAnimationFrame, we just don't re-add if we can handle it,
+      // but to match original we keep requesting. 
+      // Wait, cancelAnimationFrame needs the specific raf id returned by requestAnimationFrame.
+      // So we store the current raf ID on the stage element itself.
+      stage._rafId = requestAnimationFrame(tick);
+    }
+
+    if (stage._rafId) cancelAnimationFrame(stage._rafId);
+    stage._rafId = requestAnimationFrame(tick);
+  });
 }
 
 /**
@@ -952,25 +1271,59 @@ function initCustomCursor() {
     requestAnimationFrame(loop);
   })();
 
-  // Text elements — shrink cursor
+  // Special hover for Mohit Roscen name — slightly larger cursor (80px)
+  function attachMohitNameHover(el) {
+    el.addEventListener('mouseenter', () => {
+      cursor.classList.remove('on-text', 'on-link', 'on-zoom-text');
+      cursor.classList.add('on-name');
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.classList.remove('on-name');
+    });
+  }
+
+  // Special hover for statement paragraph — cursor expands to bigger size
+  function attachBigTextHover(el) {
+    el.addEventListener('mouseenter', () => {
+      cursor.classList.remove('on-text', 'on-link', 'on-name');
+      cursor.classList.add('on-zoom-text');
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.classList.remove('on-zoom-text');
+    });
+  }
+
+  // Text elements — regular text cursor
   function attachTextHover(el) {
-    el.addEventListener('mouseenter', () => cursor.classList.add('on-text'));
+    if (el.classList.contains('about-subtitle') || el.closest('.about-subtitle')) return;
+    if (el.classList.contains('pattern-text') || el.closest('.pattern-text')) return;
+    if (el.closest('.self-track-row')) return;
+    if (el.closest('.tech-stack-section') || el.closest('.tech-marquee-wrapper') || el.closest('.tech-marquee-item')) return;
+    el.addEventListener('mouseenter', () => {
+      if (!cursor.classList.contains('on-name')) cursor.classList.add('on-text');
+    });
     el.addEventListener('mouseleave', () => cursor.classList.remove('on-text'));
   }
 
   // Links & buttons — expand cursor
   function attachLinkHover(el) {
+    if (el.classList.contains('pattern-text') || el.closest('.pattern-text')) return;
+    if (el.closest('.tech-stack-section') || el.closest('.tech-marquee-wrapper') || el.closest('.tech-marquee-item')) return;
     el.addEventListener('mouseenter', () => {
-      cursor.classList.remove('on-text');
+      cursor.classList.remove('on-text', 'on-zoom-text', 'on-name');
       cursor.classList.add('on-link');
     });
     el.addEventListener('mouseleave', () => cursor.classList.remove('on-link'));
   }
 
   function setupListeners() {
+    document.querySelectorAll('.pattern-text, [data-shadow="Mohit Roscen"]')
+      .forEach(attachMohitNameHover);
+    document.querySelectorAll('.about-subtitle')
+      .forEach(attachBigTextHover);
     document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, label')
       .forEach(attachTextHover);
-    document.querySelectorAll('a, button, .flip-wrap, .project-item, .filter-btn, .connect-btn')
+    document.querySelectorAll('a, button, .flip-wrap, .connect-btn, .self-track-row')
       .forEach(attachLinkHover);
   }
 
@@ -982,25 +1335,48 @@ function initCustomCursor() {
 }
 
 /**
- * Scroll Reveal — elements with .sr-item are hidden until they scroll into view.
+ * Blur-in Scroll Reveal System (Bidirectional: scroll down and up)
  */
 function initScrollReveal() {
-  const items = document.querySelectorAll('.sr-item');
-  if (!items.length) return;
+  const revealElements = document.querySelectorAll('.reveal');
+  if (!revealElements.length) return;
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('sr-visible');
-        observer.unobserve(entry.target); // only trigger once
+        entry.target.classList.add('in');
+      } else {
+        entry.target.classList.remove('in');
+      }
+    });
+  }, { 
+    threshold: 0.2
+  });
+
+  revealElements.forEach(el => observer.observe(el));
+}
+
+/**
+ * Scroll Reveal for Gallery Cards with in-view class toggle
+ */
+function initGalleryReveal() {
+  const cards = document.querySelectorAll('.achievements-grid .card');
+  if (!cards.length) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+      } else {
+        entry.target.classList.remove('in-view');
       }
     });
   }, {
-    threshold: 0.15,       // trigger when 15% is visible
-    rootMargin: '0px 0px -40px 0px'  // trigger slightly before fully in view
+    threshold: 0.1,
+    rootMargin: '0px 0px -40px 0px'
   });
 
-  items.forEach(el => observer.observe(el));
+  cards.forEach(card => observer.observe(card));
 }
 
 /**
@@ -1020,84 +1396,36 @@ function initStats() {
     }
     requestAnimationFrame(tick);
   }
-  
-  if (document.getElementById('c1')) {
-    setTimeout(() => {
-      animCount('c1', 2, 1000, false);
-      animCount('c2', 10, 1200, true);
-      animCount('c3', 15, 1400, true);
-    }, 100);
+
+  const statsBar = document.querySelector('.stats-bar');
+  if (!statsBar) return;
+
+  let animated = false;
+  function trigger() {
+    if (animated) return;
+    animated = true;
+    animCount('c1', 2, 1000, false);
+    animCount('c2', 10, 1200, true);
+    animCount('c3', 15, 1400, true);
   }
-}
 
-/**
- * Initialize Project Hover Image Previews
- */
-function initProjectHover() {
-  const previews = [
-    { label: "AI Farming Drone", bg: "url('assets/img/project1.jpg') center/cover" },
-    { label: "AI Traffic Light System", bg: "url('assets/img/project2.jpg') center/cover" },
-    { label: "ICU-Alert System", bg: "url('assets/img/project3.jpg') center/cover" },
-    { label: "AI Weather Prediction", bg: "url('assets/img/project4.jpeg') center/cover" },
-    { label: "AI Medic Chatbot", bg: "url('assets/img/project5.jpg') center/cover" },
-    { label: "Multipurpose Rover", bg: "url('assets/img/project6.jpg') center/cover" },
-  ];
-
-  const preview = document.getElementById('preview');
-  const previewInner = document.getElementById('preview-inner');
-  if (!preview || !previewInner) return;
-
-  previews.forEach(p => {
-    const img = new Image();
-    const match = p.bg.match(/url\('(.*?)'\)/);
-    if (match && match[1]) {
-      img.src = match[1];
-    }
-  });
-
-  document.querySelectorAll('.folder-item').forEach(item => {
-    // Remove existing listeners by cloning and replacing to prevent duplicates if reinit is called
-    const clone = item.cloneNode(true);
-    if (item.parentNode) {
-      item.parentNode.replaceChild(clone, item);
-    }
-    
-    const projectIndex = clone.dataset.project;
-    if (projectIndex && previews[parseInt(projectIndex)]) {
-      const p = previews[parseInt(projectIndex)];
-      clone.addEventListener('mouseenter', () => {
-        previewInner.style.background = p.bg;
-        preview.classList.add('visible');
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          trigger();
+          observer.unobserve(entry.target);
+        }
       });
-      clone.addEventListener('mouseleave', () => preview.classList.remove('visible'));
-    }
-  });
-
-  // Remove previous mousemove to prevent duplicates
-  if (window._projectHoverMove) {
-    document.removeEventListener('mousemove', window._projectHoverMove);
+    }, { threshold: 0.15 });
+    observer.observe(statsBar);
+  } else {
+    setTimeout(trigger, 300);
   }
-  
-  window._projectHoverMove = function(e) {
-    if (!preview.classList.contains('visible')) return;
-    const padding = 15;
-    const halfWidth = 130;
-    const topOffset = 99;
-    const bottomOffset = 66;
-
-    const x = Math.max(halfWidth + padding, Math.min(e.clientX, window.innerWidth - halfWidth - padding));
-    const y = Math.max(topOffset + padding, Math.min(e.clientY, window.innerHeight - bottomOffset - padding));
-
-    preview.style.left = x + 'px';
-    preview.style.top = y + 'px';
-  };
-  
-  document.addEventListener('mousemove', window._projectHoverMove);
 }
 
-/**
- * Initialize Scroll Arrow
- */
+
+
 
 
 /**
@@ -1109,6 +1437,7 @@ function initScrollArrow() {
   if (!wrap || !arrow) return;
 
   const THRESHOLD = 120;
+  let ticking = false;
 
   function isNearBottom() {
     return window.innerHeight + window.scrollY >= document.body.scrollHeight - THRESHOLD;
@@ -1135,12 +1464,18 @@ function initScrollArrow() {
       const needed = distFromBottom + RING_RADIUS + FOOTER_GAP;
       const newBottom = Math.max(BASE_BOTTOM, needed);
       wrap.style.bottom = newBottom + 'px';
-      wrap.style.opacity = '1';
-      wrap.style.pointerEvents = 'auto';
     } else {
       wrap.style.bottom = BASE_BOTTOM + 'px';
-      wrap.style.opacity = '1';
-      wrap.style.pointerEvents = 'auto';
+    }
+    wrap.style.opacity = '1';
+    wrap.style.pointerEvents = 'auto';
+    ticking = false;
+  }
+
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(updateArrow);
+      ticking = true;
     }
   }
 
@@ -1153,168 +1488,29 @@ function initScrollArrow() {
 
   window._scrollArrowClick = function () {
     if (isNearBottom()) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (window.lenis) {
+        window.lenis.scrollTo(0, { duration: 1.2 });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     } else {
-      window.scrollBy({ top: window.innerHeight * 0.85, behavior: 'smooth' });
+      if (window.lenis) {
+        window.lenis.scrollTo(window.scrollY + window.innerHeight * 0.85, { duration: 1.1 });
+      } else {
+        window.scrollBy({ top: window.innerHeight * 0.85, behavior: 'smooth' });
+      }
     }
   };
 
-  window._scrollArrowUpdate = updateArrow;
+  window._scrollArrowUpdate = onScroll;
 
   arrow.addEventListener('click', window._scrollArrowClick);
-  window.addEventListener('scroll', window._scrollArrowUpdate, { passive: true });
-  window.addEventListener('resize', window._scrollArrowUpdate, { passive: true });
+  if (window.lenis) {
+    window.lenis.on('scroll', onScroll);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
   updateArrow();
 }
 
-/**
- * Initialize Project Details (for project.html)
- */
-function initProjectDetails() {
-  const projTitleEl = document.getElementById('proj-title');
-  if (!projTitleEl) return;
 
-  const projectData = [
-    {
-      title: "AI Farming Drone",
-      tag: "AI/ML",
-      image: "assets/img/project1.jpg",
-      image2: "assets/img/drone.JPEG",
-      github: "https://github.com/mohitroscen/Ai-farming-drone-for-disease-detection-.git",
-      desc: `<p>The system integrates a high-performance software pipeline tailored for edge-computing hardware, enabling the quadcopter to process high-resolution aerial feeds locally without relying on cloud connectivity. Equipped with a high-efficiency multi-spectral camera, the drone captures detailed structural data to run real-time anomaly checks. The onboard vision model instantly flags localized plant pathologies, tracks overall crop health metrics, and registers precise GPS coordinates to generate an actionable stress map for automated field diagnostics.</p>
-<h3>Tech Stack</h3>
-<ul>
-<li><strong>TensorFlow & PyTorch:</strong> Powers the core Convolutional Neural Network (CNN) for fine-grained, multi-class plant disease classification.</li>
-<li><strong>OpenCV:</strong> Handles real-time video stream ingestion, frame stabilization, and dynamic HSV color-space masking to isolate foliage.</li>
-<li><strong>Embedded Deployment:</strong> Optimized for low-power, high-FPS inference on onboard edge hardware.</li>
-<li><strong>Flight Integration:</strong> Synchronizes high-efficiency camera feeds with telemetry data for precise, geotagged crop monitoring.</li>
-</ul>`
-    },
-    {
-      title: "AI Traffic Light System",
-      tag: "AI",
-      image: "assets/img/project2.jpg",
-      image2: "assets/img/traffic.jpg",
-      github: "https://github.com/mohitroscen/Samrt-Traffic-Light-Mangment-Sytem-.git",
-      desc: `<p>An intelligent traffic control solution designed to mitigate urban congestion by replacing static timers with dynamic, real-time adjustments. Utilizing a high-efficiency camera network, the system monitors intersections to analyze vehicle density across all lanes simultaneously. By calculating live vehicle counts, the core algorithm dynamically adjusts traffic light durations—extending green lights for heavily congested roads while reducing wait times for empty lanes—optimizing overall intersection throughput and reducing idle vehicle emissions.</p>
-<h3>Tech Stack</h3>
-<ul>
-<li><strong>YOLOv5 & TensorFlow:</strong> Real-time vehicle detection, tracking, and density estimation.</li>
-<li><strong>OpenCV:</strong> Multi-camera stream ingestion, frame preprocessing, and ROI masking.</li>
-<li><strong>Smart Controller Logic:</strong> Adaptive algorithmic processing for dynamic signal switching.</li>
-</ul>`
-    },
-    {
-      title: "ICU-Alert System",
-      tag: "IOT",
-      image: "assets/img/project3.jpg",
-      image2: "assets/img/icu-alert.JPEG",
-      github: "https://github.com/mohitroscen",
-      desc: `<p>An automated, high-precision clinical monitoring system developed to enhance patient safety in intensive care units through instant distress broadcasting. The system continuously tracks critical physiological biometrics, such as heart rate fluctuations, and automatically triggers an immediate response if readings cross safe thresholds. When an anomaly is detected, it instantly broadcasts real-time alert notifications directly to the attending doctor's device while simultaneously activating a physical buzzer alarm at the central nursing station, ensuring rapid, multi-tiered medical intervention.</p>
-<h3>Tech Stack</h3>
-<ul>
-<li><strong>IoT Hardware & Sensors:</strong> Real-time physiological biometric data acquisition and hardware-level triggers.</li>
-<li><strong>Full-Stack Application:</strong> Built for centralized, low-latency monitoring and complete alert history logging.</li>
-<li><strong>Notification Architecture:</strong> Automated routing for immediate mobile alerts and localized ward alarms.</li>
-</ul>`
-    },
-    {
-      title: "AI Weather Prediction",
-      tag: "AI",
-      image: "assets/img/project4.jpeg",
-      image2: "assets/img/ai-weather.jpg",
-      github: "https://github.com/mohitroscen",
-      liveUrl: "https://ai-weather-intelligence-g9tuzwtz7ue4kvplgatane.streamlit.app/",
-      desc: `<p>A high-accuracy meteorological forecasting platform designed to deliver hyper-local weather insights. Moving away from broad regional estimates, the system pulls live conditions via the Google Weather API to analyze complex atmospheric variables for a specific, user-selected location. The application processes these inputs through a deep learning model to project upcoming conditions, organizing the results into a clean, intuitive predictive data table and generating dynamic visual graphs to help users track shifting atmospheric trends at a glance.</p>
-<h3>Tech Stack</h3>
-<ul>
-<li><strong>Keras & Pandas:</strong> Advanced data manipulation and deep learning regression for precise, hyper-local forecasting.</li>
-<li><strong>Google Weather API:</strong> Live, location-based meteorological data ingestion.</li>
-<li><strong>Streamlit:</strong> Interactive web dashboard for rendering real-time prediction tables and dynamic graphs.</li>
-</ul>`
-    },
-    {
-      title: "AI Medic Chatbot",
-      tag: "Website Design",
-      image: "assets/img/project5.jpg",
-      image2: "",
-      github: "",
-      desc: `<p>An intelligent healthcare assistant application designed to streamline patient care, scheduling, and daily medical routines. The platform features an advanced AI-powered chat interface that interacts with users to assess symptoms, answer medical queries, and provide preliminary guidance. Beyond virtual assistance, the application bridges the gap between digital and physical care by enabling seamless doctor appointment scheduling and incorporating an automated tablet reminder system to ensure strict patient medication compliance.</p>
-<h3>Tech Stack</h3>
-<ul>
-<li><strong>Flutter & Dart:</strong> Cross-platform mobile development for a smooth, high-performance user experience.</li>
-<li><strong>Generative AI / LLM API:</strong> Powers the conversational medical assistant for smart, real-time user guidance.</li>
-<li><strong>Local Notifications & Database:</strong> Manages offline tablet reminders, scheduling storage, and user alerts.</li>
-</ul>`
-    },
-    {
-      title: "Multipurpose Rover",
-      tag: "Branding",
-      image: "assets/img/project6.jpg",
-      image2: "",
-      github: "",
-      desc: `<p>A versatile, custom-built robotic rover designed as a playground for hardware-software integration and experimental automation. Built purely for exploration and hands-on fun, the rover features a modular chassis capable of adapting to diverse environments and tasks. Equipped with a remote control interface and real-time sensor feedback, this multi-purpose vehicle serves as a flexible testing bed for custom navigation algorithms, obstacle avoidance routines, and interactive hardware add-ons.</p>
-<h3>Tech Stack</h3>
-<ul>
-<li><strong>Embedded C++ & Microcontrollers:</strong> Low-level firmware architecture for motor control, sensor interfacing, and hardware logic.</li>
-<li><strong>IoT Wireless Communication:</strong> Seamless Wi-Fi or Bluetooth protocols for real-time telemetry and wireless steering control.</li>
-<li><strong>Sensor Integration:</strong> Interfaced ultrasonic sensors, motor drivers, and power management modules for autonomous traversal.</li>
-</ul>`
-    }
-  ];
-
-  const urlParams = new URLSearchParams(window.location.search);
-  let projectId = parseInt(urlParams.get('id'));
-
-  if (isNaN(projectId) || projectId < 0 || projectId >= projectData.length) {
-    projectId = 0;
-  }
-
-  const data = projectData[projectId];
-
-  projTitleEl.textContent = data.title;
-  const descContent = data.desc.trim().startsWith('<') ? data.desc : `<p>${data.desc}</p>`;
-  document.getElementById('proj-desc').innerHTML = descContent;
-  
-  const projImage1 = document.getElementById('proj-image');
-  if (projImage1) {
-    projImage1.src = data.image;
-    projImage1.alt = data.title;
-  }
-  
-  const projImage2 = document.getElementById('proj-image-2');
-  const projImage2Container = document.getElementById('proj-image-2-container');
-  if (data.image2 && projImage2 && projImage2Container) {
-    projImage2.src = data.image2;
-    projImage2.alt = data.title;
-    projImage2Container.style.display = 'block';
-  } else if (projImage2Container) {
-    projImage2Container.style.display = 'none';
-  }
-  
-  const githubLink = document.getElementById('github-link');
-  if (githubLink) {
-    if (data.github) {
-      githubLink.href = data.github;
-      githubLink.style.display = 'inline-flex';
-    } else {
-      githubLink.style.display = 'none';
-    }
-  }
-  
-  const liveLink = document.getElementById('live-link');
-  if (liveLink) {
-    if (data.liveUrl) {
-      liveLink.href = data.liveUrl;
-      liveLink.style.display = 'inline-flex';
-    } else {
-      liveLink.style.display = 'none';
-    }
-  }
-  
-  const pageTitle = document.getElementById('page-title');
-  if (pageTitle) pageTitle.textContent = `${data.title} | Projects`;
-  
-  const metaDesc = document.getElementById('meta-description');
-  if (metaDesc) metaDesc.setAttribute('content', `Learn more about Mohit Roscen's project: ${data.title}.`);
-}

@@ -4,7 +4,9 @@
   "description": "Developer portfolio website for Mohit Roscen",
   "main": "index.html",
   "scripts": {
-    "start": "echo 'Server starting at http://localhost:3005' && python3 -m http.server 3005 --bind 127.0.0.1",
+    "start": "lsof -ti:3005 | xargs kill -9 2>/dev/null; python3 -m http.server 3005 --bind 127.0.0.1",
+    "dev": "lsof -ti:3005 | xargs kill -9 2>/dev/null; python3 -m http.server 3005 --bind 127.0.0.1",
+    "serve": "npx -y serve . -l 3005",
     "build": "echo 'Static site - no build needed'"
   },
   "keywords": [
@@ -17,5 +19,8 @@
   "license": "MIT",
   "devDependencies": {
     "http-server": "^14.1.1"
+  },
+  "dependencies": {
+    "gsap": "^3.15.0"
   }
 }

@@ -10,20 +10,51 @@
   </script>
   <script defer src="/_vercel/insights/script.js"></script>
 
-  <meta name="description" id="meta-description" content="View details for Mohit Roscen's technical project.">
-  <title id="page-title">Project | Mohit Roscen</title>
+  <meta name="description" id="meta-description" content="View technical project details for Mohit Roscen.">
+  <title id="page-title">Project Details | Mohit Roscen</title>
   <link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Quantico:ital,wght@0,400;0,700;1,400;1,700&family=Viga&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quantico:ital,wght@0,400;0,700;1,400;1,700&family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=Viga&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
   <link rel="shortcut icon" href="assets/favicon/favicon.ico">
+  <style>
+    .tech-bullet-item {
+      position: relative;
+      padding-left: 24px;
+      font-family: var(--font-body);
+      font-size: 0.96rem;
+      line-height: 1.65;
+      color: var(--text-secondary);
+    }
+    .tech-bullet-item::before {
+      content: "";
+      position: absolute;
+      left: 2px;
+      top: 9px;
+      width: 7px;
+      height: 7px;
+      background: #71717a;
+      border-radius: 1.5px;
+    }
+    .tech-bullet-item strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    @media (max-width: 900px) {
+      .project-detail-grid {
+        grid-template-columns: 1fr !important;
+        gap: 2.5rem !important;
+      }
+    }
+  </style>
   <script>
     (function() {
+      sessionStorage.setItem('projDeckExpanded', 'true');
       const isReload = (window.performance && window.performance.getEntriesByType && window.performance.getEntriesByType('navigation')[0] && window.performance.getEntriesByType('navigation')[0].type === 'reload') ||
                        (window.performance && window.performance.navigation && window.performance.navigation.type === 1);
       if (sessionStorage.getItem('portfolio-loaded') && !isReload) {
@@ -54,100 +85,272 @@
     </div>
   </div>
 
-  <!-- Grain Overlay for visual texture -->
+  <!-- Grain Overlay -->
   <div class="grain-overlay"></div>
-  <div class="menu-overlay" id="menu-overlay"></div>
 
-  <div class="container fade-in-element">
-    <!-- Header/Nav -->
-    <header class="reveal-header">
-      <a href="/" class="logo">FLX</a>
-      <nav class="nav-menu" id="nav-menu">
-        <a href="/about" class="nav-link">About</a>
-        <a href="/projects" class="nav-link active">Projects</a>
-        <a href="/contact" class="nav-link">Contact</a>
-      </nav>
-      <div class="header-right">
-        <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
-          <i class="ti ti-moon" id="themeIcon"></i>
-        </button>
-        <button id="menu-toggle" class="menu-toggle-btn" aria-label="Toggle Navigation Menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-      </div>
+  <!-- Top-Left Fixed Theme Mode Toggle -->
+  <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
+    <i class="ti ti-moon" id="themeIcon"></i>
+  </button>
+
+  <!-- Vertical Side Brand Tag -->
+  <a href="index.html#home" class="side-vertical-email" aria-label="FLX">FLX</a>
+
+  <!-- Top-Right Fixed Navigation -->
+  <nav class="desktop-nav-links" aria-label="Primary Navigation">
+    <a href="index.html#about" class="desktop-nav-link"><span class="nav-text-wrapper"><span class="nav-text-inner" data-text="ABOUT">ABOUT</span></span></a>
+    <a href="index.html#projects" class="desktop-nav-link"><span class="nav-text-wrapper"><span class="nav-text-inner" data-text="WORK">WORK</span></span></a>
+    <a href="index.html#contact" class="desktop-nav-link"><span class="nav-text-wrapper"><span class="nav-text-inner" data-text="CONTACT">CONTACT</span></span></a>
+  </nav>
+
+  <!-- Visual Reading Scroll Indicator -->
+  <div class="scroll-progress-rail" id="scrollProgressRail" aria-label="Reading Progress Indicator">
+    <div class="scroll-progress-thumb" id="scrollProgressThumb"></div>
+  </div>
+
+  <div class="container fade-in-element" style="padding-top: 2rem; padding-bottom: 4rem;">
+    <header class="reveal-header" style="margin-bottom: 1.5rem;">
+      <button id="menu-toggle" class="menu-toggle-btn" aria-label="Toggle Navigation Menu">
+        <span></span>
+        <span></span>
+      </button>
     </header>
 
-    <!-- Project Detail Content -->
-    <main class="project-detail-layout">
-      <!-- Back Link -->
-      <div class="back-link-container reveal-content">
-        <a href="/projects" class="back-link">
-          <span class="back-arrow">←</span> Back to Projects
+    <!-- Main Content -->
+    <main class="project-detail-layout" style="margin-top: 1rem;">
+      <!-- Top Bar: Back Link & Action Buttons -->
+      <div class="project-detail-topbar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem;">
+        <a href="index.html#projects" class="back-link-btn" aria-label="Back to Projects" onclick="sessionStorage.setItem('fromProjectPage','1')">
+          <svg class="back-arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+          <span class="social-text-wrapper"><span class="social-text-inner" data-text="Back to Projects">Back to Projects</span></span>
         </a>
-      </div>
- 
-      <div class="project-detail-grid">
-        <div class="project-detail-info reveal-content">
-          <h1 class="project-detail-title" id="proj-title"></h1>
-          <p class="project-detail-description" id="proj-desc"></p>
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <a href="" target="_blank" id="live-link" class="proj-link-btn" style="position: relative; top: 0; right: 0; display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px; font-size: 13px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px;">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+            <span class="social-text-wrapper"><span class="social-text-inner" data-text="Live URL">Live URL</span></span>
+          </a>
+          <a href="" target="_blank" id="github-link" class="proj-link-btn" style="position: relative; top: 0; right: 0; display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px; font-size: 13px;">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width: 16px; height: 16px;">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4 11.5 11.5 0 0 1 3 .4c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.57 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z" />
+            </svg>
+            <span class="social-text-wrapper"><span class="social-text-inner" data-text="GitHub Source">GitHub Source</span></span>
+          </a>
         </div>
- 
-        <div class="project-detail-images-column reveal-media">
-          <div class="project-action-links" style="display: flex; gap: 1rem; margin-bottom: 2rem;">
-            <a href="" target="_blank" id="github-link" class="github-source-btn" style="margin-bottom: 0;">
-              <span class="icon-wrap">
-                <svg class="icon-fill" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4 11.5 11.5 0 0 1 3 .4c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.57 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z" />
-                </svg>
-                <svg class="icon-outline" width="16" height="16" viewBox="0 0 24 24">
-                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
-                </svg>
-              </span>
-              GitHub Source
-            </a>
-            <a href="" target="_blank" id="live-link" class="github-source-btn" style="display: none; margin-bottom: 0;">
-              <span class="icon-wrap">
-                <svg class="icon-fill" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                  <polyline points="15 3 21 3 21 9"></polyline>
-                  <line x1="10" y1="14" x2="21" y2="3"></line>
-                </svg>
-                <svg class="icon-outline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                  <polyline points="15 3 21 3 21 9"></polyline>
-                  <line x1="10" y1="14" x2="21" y2="3"></line>
-                </svg>
-              </span>
-              Live Demo
-            </a>
+      </div>
+
+      <div class="project-detail-grid" style="display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 3.5rem; align-items: start;">
+        <!-- Left Column: Title, Description & Tech Stack -->
+        <div class="project-detail-info">
+          <h1 class="project-detail-title" id="proj-title" style="font-family: var(--font-heading); font-size: clamp(2.4rem, 4.5vw, 3.6rem); font-weight: 800; margin-bottom: 1.5rem; color: var(--text-primary); letter-spacing: -0.02em; line-height: 1.1;"></h1>
+          <p class="project-detail-description" id="proj-desc" style="font-family: var(--font-body); font-size: 1.02rem; line-height: 1.75; color: var(--text-secondary); margin-bottom: 2.5rem;"></p>
+
+          <!-- Tech Stack Section -->
+          <div class="project-tech-stack-container" id="tech-stack-container">
+            <h3 style="font-family: var(--font-heading); font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1.25rem;">Tech Stack</h3>
+            <ul id="proj-tech-list" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1rem;">
+            </ul>
           </div>
-          <div class="project-detail-image-container">
-            <div class="project-detail-image-glow"></div>
-            <img src="" alt="" id="proj-image" class="project-detail-image">
+        </div>
+
+        <!-- Right Column: Stacked Project Media Images -->
+        <div class="project-detail-images-column" style="display: flex; flex-direction: column; gap: 1.5rem;">
+          <div class="project-detail-image-container" id="proj-image-1-container" style="border-radius: 16px; overflow: hidden; border: 1px solid var(--border-color); background: rgba(255,255,255,0.02);">
+            <img src="" alt="" id="proj-image" class="project-detail-image" style="width: 100%; height: 260px; object-fit: cover; display: block;">
           </div>
-          <div class="project-detail-image-container" id="proj-image-2-container">
-            <div class="project-detail-image-glow"></div>
-            <img src="" alt="" id="proj-image-2" class="project-detail-image">
+          <div class="project-detail-image-container" id="proj-image-2-container" style="border-radius: 16px; overflow: hidden; border: 1px solid var(--border-color); background: rgba(255,255,255,0.02);">
+            <img src="" alt="" id="proj-image-2" class="project-detail-image" style="width: 100%; height: 260px; object-fit: cover; display: block;">
           </div>
         </div>
       </div>
     </main>
- 
-    <!-- Bottom Footer connect bar -->
-    <div class="bottom-connect-bar reveal-content">
-      <a href="/contact" class="connect-btn">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-        </svg>
-        Write Message
-      </a>
-      <span class="copyright-text">&copy; 2026 Mohit Roscen</span>
-    </div>
+
+    <!-- Footer -->
+    <footer class="portfolio-footer reveal">
+      <p class="footer-cta-text">Have a project in mind?</p>
+      <a href="mailto:info@mohitroscen.com" class="footer-email-big">info@mohitroscen.com</a>
+    </footer>
+
+    <!-- Inline script INSIDE .container.fade-in-element so AJAX loadPage() executes it -->
+    <script>
+      (function() {
+        const projectsData = {
+          'ai-farming-drone': {
+            title: 'AI Farming Drone',
+            desc: 'The system integrates a high-performance software pipeline tailored for edge-computing hardware, enabling the quadcopter to process high-resolution aerial feeds locally without relying on cloud connectivity. Equipped with a high-efficiency multi-spectral camera, the drone captures detailed structural data to run real-time anomaly checks. The onboard vision model instantly flags localized plant pathologies, tracks overall crop health metrics, and registers precise GPS coordinates to generate an actionable stress map for automated field diagnostics.',
+            techStack: [
+              ['TensorFlow & PyTorch', 'Powers the core Convolutional Neural Network (CNN) for fine-grained, multi-class plant disease classification.'],
+              ['OpenCV', 'Handles real-time video stream ingestion, frame stabilization, and dynamic HSV color-space masking to isolate foliage.'],
+              ['Embedded Deployment', 'Optimized for low-power, high-FPS inference on onboard edge hardware.'],
+              ['Flight Integration', 'Synchronizes high-efficiency camera feeds with telemetry data for precise, geotagged crop monitoring.']
+            ],
+            image: 'assets/img/project1.jpg',
+            image2: 'assets/img/drone.JPEG',
+            github: 'https://github.com/mohitroscen/Ai-farming-drone-for-disease-detection-'
+          },
+          'ai-traffic-light-system': {
+            title: 'AI Traffic Light System',
+            desc: 'An intelligent computer-vision driven urban traffic signal controller designed to eliminate static timer bottlenecks at complex intersections. The system ingests live HD camera streams across multiple lanes, running real-time vehicle detection and tracking algorithms. It dynamically calculates queue lengths, vehicle speeds, and lane occupancy to continuously adjust green-light signal durations, prioritizing congested corridors and providing emergency vehicle preemption.',
+            techStack: [
+              ['YOLOv8 & PyTorch', 'Performs real-time multi-class vehicle detection, classification (cars, buses, trucks, ambulances), and speed estimation.'],
+              ['OpenCV', 'Manages multi-stream video decoding, Region of Interest (ROI) lane masking, and visual queue density analysis.'],
+              ['Dynamic Logic Engine', 'Custom mathematical optimization algorithm that re-calculates signal phase timing on every cycle to minimize overall intersection delay.'],
+              ['Emergency Preemption', 'Detects emergency vehicle visual signatures and acoustic triggers to force immediate green corridors.']
+            ],
+            image: 'assets/img/project2.jpg',
+            image2: 'assets/img/traffic.jpg',
+            github: 'https://github.com/mohitroscen/Samrt-Traffic-Light-Mangment-Sytem-'
+          },
+          'icu-alert-system': {
+            title: 'ICU-Alert System',
+            desc: 'A critical care patient monitoring and early-warning alert system developed for Intensive Care Units to prevent silent physiological deterioration. The platform interfaces with bedside medical sensors to continuously ingest multi-parameter telemetry including heart rate, SpO2, blood pressure, and respiration rate. Using time-series anomaly detection algorithms, it predicts adverse medical events minutes before critical thresholds are breached, firing instant visual and auditory alerts to nursing stations.',
+            techStack: [
+              ['Time-Series ML Models', 'Employs LSTM & Isolation Forests to model non-linear physiological baseline trends and detect subtle vitals degradation.'],
+              ['Real-Time Telemetry Pipeline', 'Built with lightweight WebSockets and MQTT protocols for zero-latency sensor streaming to central monitoring stations.'],
+              ['React & Canvas UI', 'Features high-frequency waveform plotting and color-coded risk prioritization dashboards for medical staff.'],
+              ['Clinical Threshold Rules', 'Combines machine learning anomaly scores with strict medical clinical alert boundaries for zero false negatives.']
+            ],
+            image: 'assets/img/project3.jpg',
+            image2: 'assets/img/icu-alert.JPEG',
+            github: 'https://github.com/mohitroscen/Icu--Alert-system-'
+          },
+          'ai-weather-prediction': {
+            title: 'AI Weather Prediction',
+            desc: 'An advanced meteorological forecasting framework leveraging deep learning neural networks to predict hyper-local microclimate shifts and severe weather events. By processing historical atmospheric datasets, satellite imagery, and ground weather station telemetry, the model learns intricate spatial-temporal patterns to generate accurate short-term rainfall, temperature, and wind speed forecasts far faster than conventional numerical weather models.',
+            techStack: [
+              ['ConvLSTM & Transformer', 'Spatio-temporal neural architectures for modeling complex atmospheric fluid dynamics and radar imagery prediction.'],
+              ['NetCDF & Raster Pipeline', 'Handles large-scale multi-dimensional climate datasets (ERA5, satellite radar grids) with NumPy and xarray.'],
+              ['FastAPI Backend', 'Exposes high-speed RESTful API endpoints delivering real-time weather probability maps and alert notifications.'],
+              ['Interactive Web Dashboard', 'Visualizes temperature contours, precipitation radar overlays, and wind vector animations in real time.']
+            ],
+            image: 'assets/img/project4.jpeg',
+            image2: 'assets/img/ai-weather.jpg',
+            github: 'https://github.com/mohitroscen/ai-weather-intelligence',
+            live: 'https://ai-weather-intelligence-g9tuzwtz7ue4kvplgatane.streamlit.app/'
+          },
+          'ai-medic-chatbot': {
+            title: 'AI Medic Chatbot',
+            desc: 'An intelligent conversational AI health assistant designed to provide accessible, 24/7 medical information, preliminary symptom assessment, and triage guidance. Trained on verified clinical knowledge repositories and medical literature, the chatbot interacts naturally with users to evaluate symptoms, ask targeted clarifying questions, assess urgency levels, and offer evidence-based first-aid or physician referral recommendations.',
+            techStack: [
+              ['LLM & Fine-Tuned NLP', 'Utilizes domain-adapted Transformer language models fine-tuned on curated medical QA and clinical dialogue datasets.'],
+              ['RAG Architecture', 'Retrieval-Augmented Generation retrieving medical facts from medical knowledge graphs to eliminate hallucinations.'],
+              ['Triage & Risk Engine', 'Implements standardized clinical triage protocols (Emergency Severity Index) to categorize user risk levels.'],
+              ['Privacy & Security', 'Ensures zero-log anonymized user sessions with encrypted communication to protect sensitive health queries.']
+            ],
+            image: 'assets/img/project5.jpg',
+            image2: '',
+            github: 'https://github.com/mohitroscen'
+          },
+          'multipurpose-rover': {
+            title: 'Multipurpose Rover',
+            desc: 'A rugged, custom-engineered robotic terrain vehicle engineered for hazardous environment inspection, payload transport, and remote exploration. The rover features a heavy-duty rocker-bogie suspension system for high obstacle traversal, a 4-DOF articulated robotic manipulator arm, and onboard telemetry sensors. Operated via wireless long-range RF and Wi-Fi links, it feeds live video and sensor diagnostic data back to a remote ground control station.',
+            techStack: [
+              ['Embedded Microcontrollers', 'Arduino & ESP32 architecture managing motor pulse-width modulation (PWM), servo arm control, and sensor reading.'],
+              ['Wireless Control Pipeline', 'Dual-band 2.4GHz Wi-Fi & NRF24L01 long-range telemetry link for low-latency command processing and video stream.'],
+              ['Mechanical Kinematics', 'Inverse kinematics calculations for 4-DOF robotic arm manipulation and claw payload grabbing.'],
+              ['Sensors & Video Feed', 'Integrated ultrasonic proximity arrays, IMU orientation tracking, and high-definition FPV camera stream.']
+            ],
+            image: 'assets/img/project6.jpg',
+            image2: '',
+            github: 'https://github.com/mohitroscen'
+          }
+        };
+
+        window.initProjectDetail = function(customUrl) {
+          const urlStr = customUrl || window.location.href;
+          let id = 'ai-farming-drone';
+          try {
+            const urlObj = new URL(urlStr, window.location.origin);
+            id = urlObj.searchParams.get('id') || 'ai-farming-drone';
+          } catch(e) {
+            const match = urlStr.match(/[?&]id=([^&]+)/);
+            if (match) id = match[1];
+          }
+
+          const proj = projectsData[id] || projectsData['ai-farming-drone'];
+
+          const pageTitle = document.getElementById('page-title');
+          if (pageTitle) pageTitle.innerText = proj.title + ' | Mohit Roscen';
+
+          const projTitle = document.getElementById('proj-title');
+          if (projTitle) projTitle.innerText = proj.title;
+
+          const projDesc = document.getElementById('proj-desc');
+          if (projDesc) projDesc.innerText = proj.desc;
+
+          const liveLink = document.getElementById('live-link');
+          if (liveLink) {
+            if (proj.live) {
+              liveLink.href = proj.live;
+              liveLink.style.display = 'inline-flex';
+            } else {
+              liveLink.style.display = 'none';
+            }
+          }
+
+          const githubLink = document.getElementById('github-link');
+          if (githubLink) {
+            if (proj.github) {
+              githubLink.href = proj.github;
+              githubLink.style.display = 'inline-flex';
+            } else {
+              githubLink.style.display = 'none';
+            }
+          }
+
+          // Tech Stack Bullets
+          const techList = document.getElementById('proj-tech-list');
+          const techContainer = document.getElementById('tech-stack-container');
+          if (techList && proj.techStack && proj.techStack.length > 0) {
+            techList.innerHTML = '';
+            proj.techStack.forEach(([title, detail]) => {
+              const li = document.createElement('li');
+              li.className = 'tech-bullet-item';
+              li.innerHTML = `<strong>${title}:</strong> ${detail}`;
+              techList.appendChild(li);
+            });
+            if (techContainer) techContainer.style.display = 'block';
+          } else if (techContainer) {
+            techContainer.style.display = 'none';
+          }
+
+          // Images
+          const img1 = document.getElementById('proj-image');
+          const img1Container = document.getElementById('proj-image-1-container');
+          if (img1) {
+            if (proj.image) {
+              img1.src = proj.image;
+              img1.alt = proj.title;
+              if (img1Container) img1Container.style.display = 'block';
+            } else if (img1Container) {
+              img1Container.style.display = 'none';
+            }
+          }
+
+          const img2Container = document.getElementById('proj-image-2-container');
+          const img2 = document.getElementById('proj-image-2');
+          if (img2) {
+            if (proj.image2) {
+              img2.src = proj.image2;
+              img2.alt = proj.title;
+              if (img2Container) img2Container.style.display = 'block';
+            } else if (img2Container) {
+              img2Container.style.display = 'none';
+            }
+          }
+        };
+
+        window.initProjectDetail();
+      })();
+    </script>
   </div>
 
-  <script src="js/main.js?v=1.0.3"></script>
-
+  <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
+  <script src="js/main.js?v=2.0.1"></script>
 </body>
 </html>
