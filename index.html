@@ -21,7 +21,8 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&family=Inter:wght@400;500;600&family=Quantico:ital,wght@0,400;0,700;1,400;1,700&family=Sora:wght@500;600;700&family=Viga&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=7.2.4">
+  <link rel="stylesheet" href="css/style.css?v=7.2.5">
+  <link rel="preload" as="video" href="assets/img/1781456302945569.mp4" type="video/mp4">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
@@ -71,10 +72,11 @@
   <!-- Loader Overlay -->
   <div id="loader-overlay" class="loader-overlay">
     <div class="loader-container">
-      <div class="loader-avatar-wrap">
+      <div class="loader-avatar-wrap" id="loader-avatar-wrap">
         <div class="loader-avatar-inner">
-          <video src="assets/img/1781456302945569.mp4" autoplay loop muted playsinline></video>
+          <video id="loader-video" src="assets/img/1781456302945569.mp4" autoplay loop muted playsinline preload="auto"></video>
         </div>
+        <div class="loader-avatar-pulse" id="loader-avatar-pulse"></div>
       </div>
       <div class="loader-name">FLX</div>
       <div class="loader-bar-section">

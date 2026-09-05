@@ -3974,7 +3974,7 @@ button:hover,
   height: 96px;
   border-radius: 50%;
   border: 1px solid #2a2a2a;
-  overflow: hidden;
+  overflow: visible;
   background: #141414;
   opacity: 0;
   animation: loaderFadeIn 0.5s ease 0.3s forwards;
@@ -3982,6 +3982,7 @@ button:hover,
   flex-shrink: 0;
 }
 
+/* Clip only the inner video, not the pulse ring */
 .loader-avatar-inner {
   width: 100%;
   height: 100%;
@@ -3989,6 +3990,7 @@ button:hover,
   align-items: flex-end;
   justify-content: center;
   overflow: hidden;
+  border-radius: 50%;
 }
 
 .loader-avatar-inner img,
@@ -3997,6 +3999,36 @@ button:hover,
   height: 96px;
   object-fit: cover;
   display: block;
+  /* Hide video until it can play; JS will reveal it */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.loader-avatar-inner video.video-ready {
+  opacity: 1;
+}
+
+/* Spinning ring fallback shown while video buffers */
+.loader-avatar-pulse {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-top-color: #ffffff55;
+  border-right-color: #ffffff22;
+  animation: loaderVideoSpin 1s linear infinite;
+  pointer-events: none;
+  z-index: 3;
+  transition: opacity 0.3s ease;
+}
+
+.loader-avatar-pulse.pulse-hidden {
+  opacity: 0;
+  animation: none;
+}
+
+@keyframes loaderVideoSpin {
+  to { transform: rotate(360deg); }
 }
 
 @keyframes loaderFadeIn {

@@ -990,6 +990,34 @@ function initLoader() {
   // Mark the site as loaded for this session
   sessionStorage.setItem('portfolio-loaded', 'true');
 
+  // --- Video ready handling ---
+  // The video starts hidden (opacity:0 in CSS). Show it only once it can play.
+  const loaderVideo = document.getElementById('loader-video');
+  const loaderPulse = document.getElementById('loader-avatar-pulse');
+
+  function revealVideo() {
+    if (loaderVideo) loaderVideo.classList.add('video-ready');
+    if (loaderPulse) loaderPulse.classList.add('pulse-hidden');
+  }
+
+  if (loaderVideo) {
+    // Force load & play (needed on some mobile browsers)
+    loaderVideo.load();
+    const playPromise = loaderVideo.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => { /* autoplay blocked — still reveal after canplay */ });
+    }
+
+    if (loaderVideo.readyState >= 3) {
+      // Already buffered enough (e.g. cached from preload)
+      revealVideo();
+    } else {
+      loaderVideo.addEventListener('canplay', revealVideo, { once: true });
+      // Safety fallback: if video still not ready after 3s, show it anyway
+      setTimeout(revealVideo, 3000);
+    }
+  }
+
   // Progress counter
   const msgs = ['Initializing...', 'Loading assets...', 'Almost there...', 'Welcome'];
   const fill = document.getElementById('bar-fill');
