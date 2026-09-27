@@ -969,15 +969,15 @@ function initFactsFlip() {
 function initLoader() {
   const loaderOverlay = document.getElementById('loader-overlay');
   if (!loaderOverlay) {
-    // If there is no loader overlay, still trigger the CSS entrance animations
-    setTimeout(() => {
-      document.body.classList.add('loaded');
-    }, 50);
+    setTimeout(() => { document.body.classList.add('loaded'); }, 50);
     return;
   }
 
-  const isReload = (window.performance && window.performance.getEntriesByType && window.performance.getEntriesByType('navigation')[0] && window.performance.getEntriesByType('navigation')[0].type === 'reload') ||
-                   (window.performance && window.performance.navigation && window.performance.navigation.type === 1);
+  const isReload = (window.performance && window.performance.getEntriesByType &&
+                    window.performance.getEntriesByType('navigation')[0] &&
+                    window.performance.getEntriesByType('navigation')[0].type === 'reload') ||
+                   (window.performance && window.performance.navigation &&
+                    window.performance.navigation.type === 1);
   const hasLoaded = sessionStorage.getItem('portfolio-loaded');
 
   if (hasLoaded && !isReload) {
@@ -987,72 +987,51 @@ function initLoader() {
     return;
   }
 
-  // Mark the site as loaded for this session
   sessionStorage.setItem('portfolio-loaded', 'true');
 
-  // --- Video ready handling ---
-  // The video starts hidden (opacity:0 in CSS). Show it only once it can play.
-  const loaderVideo = document.getElementById('loader-video');
-  const loaderPulse = document.getElementById('loader-avatar-pulse');
-
-  function revealVideo() {
-    if (loaderVideo) loaderVideo.classList.add('video-ready');
-    if (loaderPulse) loaderPulse.classList.add('pulse-hidden');
-  }
-
-  if (loaderVideo) {
-    // Force load & play (needed on some mobile browsers)
-    loaderVideo.load();
-    const playPromise = loaderVideo.play();
-    if (playPromise !== undefined) {
-      playPromise.catch(() => { /* autoplay blocked — still reveal after canplay */ });
-    }
-
-    if (loaderVideo.readyState >= 3) {
-      // Already buffered enough (e.g. cached from preload)
-      revealVideo();
-    } else {
-      loaderVideo.addEventListener('canplay', revealVideo, { once: true });
-      // Safety fallback: if video still not ready after 3s, show it anyway
-      setTimeout(revealVideo, 3000);
-    }
-  }
-
-  // Progress counter
-  const msgs = ['Initializing...', 'Loading assets...', 'Almost there...', 'Welcome'];
-  const fill = document.getElementById('bar-fill');
-  const pct = document.getElementById('bar-pct');
-  const msg = document.getElementById('bar-msg');
-
-  if (fill && pct && msg) {
+  // -- Number counter elements --
+  const counterEl = document.getElementById('loader-counter-num');
+  if (!counterEl) {
+    // Fallback: no counter element, just trigger loaded
     setTimeout(() => {
-      let v = 0;
-      let mi = 0;
-
-      const t = setInterval(() => {
-        // Increment progress by 1 or 2 (average 1.5) per tick for a longer loading screen
-        v = Math.min(100, v + Math.ceil(Math.random() * 2));
-        fill.style.width = v + '%';
-        pct.textContent = v + '%';
-        
-        const ni = v < 30 ? 0 : v < 60 ? 1 : v < 90 ? 2 : 3;
-        if (ni !== mi) {
-          mi = ni;
-          msg.textContent = msgs[mi];
-        }
-
-        if (v >= 100) {
-          clearInterval(t);
-          setTimeout(() => {
-            loaderOverlay.classList.add('fade-out');
-            document.body.classList.remove('loading');
-            document.body.classList.add('loaded');
-          }, 280);
-        }
-      }, 40); // 40ms per tick (average fill time is ~2.67s)
-    }, 800); // Initial entrance delay of 800ms (0.8s)
+      loaderOverlay.classList.add('fade-out');
+      document.body.classList.remove('loading');
+      document.body.classList.add('loaded');
+    }, 800);
+    return;
   }
+
+  let progress = 0;
+  const totalDuration = 2200; // ms — target total fill time
+  const interval = 20; // tick every 20ms
+
+  // Ease-out curve so it slows near 100
+  function easeOutCubic(t) {
+    return 1 - Math.pow(1 - t, 3);
+  }
+
+  let elapsed = 0;
+
+  const tick = setInterval(() => {
+    elapsed += interval;
+    const t = Math.min(elapsed / totalDuration, 1);
+    progress = Math.floor(easeOutCubic(t) * 100);
+
+    // Update the counter text
+    counterEl.textContent = progress;
+
+    if (progress >= 100) {
+      clearInterval(tick);
+      // Small hold at 100, then fade out
+      setTimeout(() => {
+        loaderOverlay.classList.add('fade-out');
+        document.body.classList.remove('loading');
+        document.body.classList.add('loaded');
+      }, 220);
+    }
+  }, interval);
 }
+
 
 /**
  * Page Transitions
